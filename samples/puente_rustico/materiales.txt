@@ -1,0 +1,5 @@
+dark_oak_planks: 32
+glowstone: 16
+oak_planks: 161
+spruce_planks: 30
+stone_bricks: 469

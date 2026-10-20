@@ -1,0 +1,6 @@
+cracked_stone_bricks: 76
+glass: 24
+glowstone: 1
+mossy_stone_bricks: 121
+spruce_planks: 190
+stone_bricks: 680

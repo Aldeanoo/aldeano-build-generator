@@ -1,0 +1,7 @@
+bricks: 44
+dark_oak_planks: 129
+glass: 48
+oak_planks: 306
+sea_lantern: 2
+spruce_planks: 394
+stone_bricks: 529

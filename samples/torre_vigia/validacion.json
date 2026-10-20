@@ -1,0 +1,40 @@
+{
+  "generator_version": "0.1.0",
+  "schema": "aldeano-build/v1",
+  "name": "torre_vigia",
+  "edition": "both",
+  "java_profile": "java-26.3",
+  "bedrock_profile": "bedrock-1.26.30",
+  "pack_version": [
+    1,
+    0,
+    0
+  ],
+  "size": [
+    13,
+    24,
+    13
+  ],
+  "placed_blocks": 1092,
+  "explicit_air": 749,
+  "omitted_cells": 2215,
+  "validation": {
+    "level": "structural",
+    "passed": true,
+    "checks": [
+      "bedrock_nbt_little_endian",
+      "bedrock_geometry_and_palette",
+      "mcpack_contents",
+      "java_gzip_nbt_big_endian",
+      "java_geometry_and_palette",
+      "datapack_contents"
+    ],
+    "minecraft_tested": false
+  },
+  "sha256": {
+    "torre_vigia.mcstructure": "424d2beb17f11dd7b983a6522b04dfdb91db4ad4d89723694b50727dd07f4a61",
+    "torre_vigia.mcpack": "a3037dd40d5b748a2a03093ed54f6d93f1e5f2d4dc2c88a47613e04b9f04d8bd",
+    "torre_vigia.nbt": "41bf56cb4888d22daaa9af8a02d3b3ec14de12014f8cfa3f9a7afe6723af7b11",
+    "torre_vigia.datapack.zip": "5632a68c67e091d373d24aeaf32ac4a4c86c037cd93f09ff5fa56d0c9970fa3d"
+  }
+}

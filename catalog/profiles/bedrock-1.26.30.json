@@ -1,0 +1,12 @@
+{
+  "id": "bedrock-1.26.30",
+  "format_version": 1,
+  "block_palette_version": 18168865,
+  "min_engine_version": [
+    1,
+    26,
+    30
+  ],
+  "status": "experimental",
+  "minecraft_tested": false
+}

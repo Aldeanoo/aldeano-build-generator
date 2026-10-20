@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Aldeanoo/aldeano-build-generator/schema/aldeano-build-v1.schema.json",
+  "title": "Aldeano BuildSpec v1",
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": "aldeano-build/v1"
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_]{0,47}$"
+    },
+    "size": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 48
+      },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "palette": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 64,
+      "propertyNames": {
+        "type": "string",
+        "pattern": "^[a-z][a-z0-9_]{0,47}$"
+      },
+      "additionalProperties": {
+        "enum": [
+          "air",
+          "stone",
+          "cobblestone",
+          "stone_bricks",
+          "mossy_stone_bricks",
+          "cracked_stone_bricks",
+          "bricks",
+          "oak_planks",
+          "spruce_planks",
+          "birch_planks",
+          "dark_oak_planks",
+          "acacia_planks",
+          "jungle_planks",
+          "mangrove_planks",
+          "cherry_planks",
+          "bamboo_planks",
+          "glass",
+          "white_wool",
+          "gray_wool",
+          "black_wool",
+          "red_wool",
+          "white_concrete",
+          "gray_concrete",
+          "black_concrete",
+          "red_concrete",
+          "terracotta",
+          "white_terracotta",
+          "brown_terracotta",
+          "sandstone",
+          "smooth_sandstone",
+          "red_sandstone",
+          "quartz_block",
+          "smooth_quartz",
+          "gold_block",
+          "iron_block",
+          "glowstone",
+          "sea_lantern"
+        ]
+      }
+    },
+    "ops": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 512,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "op": {
+                "const": "set"
+              },
+              "block": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]{0,47}$"
+              },
+              "at": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 47
+                },
+                "minItems": 3,
+                "maxItems": 3
+              }
+            },
+            "required": [
+              "op",
+              "block",
+              "at"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "op": {
+                "const": "fill"
+              },
+              "block": {
+                "type": "string",
+                "pattern": "^[a-z][a-z0-9_]{0,47}$"
+              },
+              "from": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 47
+                },
+                "minItems": 3,
+                "maxItems": 3
+              },
+              "to": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 47
+                },
+                "minItems": 3,
+                "maxItems": 3
+              }
+            },
+            "required": [
+              "op",
+              "block",
+              "from",
+              "to"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "schema",
+    "name",
+    "size",
+    "palette",
+    "ops"
+  ],
+  "additionalProperties": false,
+  "$comment": "Runtime also checks bounds, ordered fill endpoints, aliases, reserved keys, active max size and write budget."
+}

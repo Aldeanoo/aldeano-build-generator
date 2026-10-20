@@ -1,0 +1,228 @@
+{
+  "air": {
+    "java": "minecraft:air",
+    "bedrock": "minecraft:air",
+    "bedrock_states": {},
+    "color": "#ffffff"
+  },
+  "stone": {
+    "java": "minecraft:stone",
+    "bedrock": "minecraft:stone",
+    "bedrock_states": {},
+    "color": "#858585"
+  },
+  "cobblestone": {
+    "java": "minecraft:cobblestone",
+    "bedrock": "minecraft:cobblestone",
+    "bedrock_states": {},
+    "color": "#737373"
+  },
+  "stone_bricks": {
+    "java": "minecraft:stone_bricks",
+    "bedrock": "minecraft:stone_bricks",
+    "bedrock_states": {},
+    "color": "#96918a"
+  },
+  "mossy_stone_bricks": {
+    "java": "minecraft:mossy_stone_bricks",
+    "bedrock": "minecraft:mossy_stone_bricks",
+    "bedrock_states": {},
+    "color": "#71826b"
+  },
+  "cracked_stone_bricks": {
+    "java": "minecraft:cracked_stone_bricks",
+    "bedrock": "minecraft:cracked_stone_bricks",
+    "bedrock_states": {},
+    "color": "#7f7c76"
+  },
+  "bricks": {
+    "java": "minecraft:bricks",
+    "bedrock": "minecraft:brick_block",
+    "bedrock_states": {},
+    "color": "#a76552"
+  },
+  "oak_planks": {
+    "java": "minecraft:oak_planks",
+    "bedrock": "minecraft:oak_planks",
+    "bedrock_states": {},
+    "color": "#b8945f"
+  },
+  "spruce_planks": {
+    "java": "minecraft:spruce_planks",
+    "bedrock": "minecraft:spruce_planks",
+    "bedrock_states": {},
+    "color": "#765637"
+  },
+  "birch_planks": {
+    "java": "minecraft:birch_planks",
+    "bedrock": "minecraft:birch_planks",
+    "bedrock_states": {},
+    "color": "#d7c88e"
+  },
+  "dark_oak_planks": {
+    "java": "minecraft:dark_oak_planks",
+    "bedrock": "minecraft:dark_oak_planks",
+    "bedrock_states": {},
+    "color": "#49301f"
+  },
+  "acacia_planks": {
+    "java": "minecraft:acacia_planks",
+    "bedrock": "minecraft:acacia_planks",
+    "bedrock_states": {},
+    "color": "#b9653c"
+  },
+  "jungle_planks": {
+    "java": "minecraft:jungle_planks",
+    "bedrock": "minecraft:jungle_planks",
+    "bedrock_states": {},
+    "color": "#b7825b"
+  },
+  "mangrove_planks": {
+    "java": "minecraft:mangrove_planks",
+    "bedrock": "minecraft:mangrove_planks",
+    "bedrock_states": {},
+    "color": "#793c36"
+  },
+  "cherry_planks": {
+    "java": "minecraft:cherry_planks",
+    "bedrock": "minecraft:cherry_planks",
+    "bedrock_states": {},
+    "color": "#dcafa8"
+  },
+  "bamboo_planks": {
+    "java": "minecraft:bamboo_planks",
+    "bedrock": "minecraft:bamboo_planks",
+    "bedrock_states": {},
+    "color": "#c9b556"
+  },
+  "glass": {
+    "java": "minecraft:glass",
+    "bedrock": "minecraft:glass",
+    "bedrock_states": {},
+    "color": "#a4d5df"
+  },
+  "white_wool": {
+    "java": "minecraft:white_wool",
+    "bedrock": "minecraft:white_wool",
+    "bedrock_states": {},
+    "color": "#e7e5dd"
+  },
+  "gray_wool": {
+    "java": "minecraft:gray_wool",
+    "bedrock": "minecraft:gray_wool",
+    "bedrock_states": {},
+    "color": "#44474b"
+  },
+  "black_wool": {
+    "java": "minecraft:black_wool",
+    "bedrock": "minecraft:black_wool",
+    "bedrock_states": {},
+    "color": "#242426"
+  },
+  "red_wool": {
+    "java": "minecraft:red_wool",
+    "bedrock": "minecraft:red_wool",
+    "bedrock_states": {},
+    "color": "#a52d28"
+  },
+  "white_concrete": {
+    "java": "minecraft:white_concrete",
+    "bedrock": "minecraft:white_concrete",
+    "bedrock_states": {},
+    "color": "#dadcdd"
+  },
+  "gray_concrete": {
+    "java": "minecraft:gray_concrete",
+    "bedrock": "minecraft:gray_concrete",
+    "bedrock_states": {},
+    "color": "#373a3e"
+  },
+  "black_concrete": {
+    "java": "minecraft:black_concrete",
+    "bedrock": "minecraft:black_concrete",
+    "bedrock_states": {},
+    "color": "#181a20"
+  },
+  "red_concrete": {
+    "java": "minecraft:red_concrete",
+    "bedrock": "minecraft:red_concrete",
+    "bedrock_states": {},
+    "color": "#8e2525"
+  },
+  "terracotta": {
+    "java": "minecraft:terracotta",
+    "bedrock": "minecraft:hardened_clay",
+    "bedrock_states": {},
+    "color": "#9e6247"
+  },
+  "white_terracotta": {
+    "java": "minecraft:white_terracotta",
+    "bedrock": "minecraft:white_terracotta",
+    "bedrock_states": {},
+    "color": "#d0ad9e"
+  },
+  "brown_terracotta": {
+    "java": "minecraft:brown_terracotta",
+    "bedrock": "minecraft:brown_terracotta",
+    "bedrock_states": {},
+    "color": "#583e31"
+  },
+  "sandstone": {
+    "java": "minecraft:sandstone",
+    "bedrock": "minecraft:sandstone",
+    "bedrock_states": {},
+    "color": "#d6c694"
+  },
+  "smooth_sandstone": {
+    "java": "minecraft:smooth_sandstone",
+    "bedrock": "minecraft:smooth_sandstone",
+    "bedrock_states": {},
+    "color": "#dfd0a4"
+  },
+  "red_sandstone": {
+    "java": "minecraft:red_sandstone",
+    "bedrock": "minecraft:red_sandstone",
+    "bedrock_states": {},
+    "color": "#b76527"
+  },
+  "quartz_block": {
+    "java": "minecraft:quartz_block",
+    "bedrock": "minecraft:quartz_block",
+    "bedrock_states": {
+      "pillar_axis": "y"
+    },
+    "color": "#e8e3da"
+  },
+  "smooth_quartz": {
+    "java": "minecraft:smooth_quartz",
+    "bedrock": "minecraft:smooth_quartz",
+    "bedrock_states": {
+      "pillar_axis": "y"
+    },
+    "color": "#eeebe5"
+  },
+  "gold_block": {
+    "java": "minecraft:gold_block",
+    "bedrock": "minecraft:gold_block",
+    "bedrock_states": {},
+    "color": "#e9ca44"
+  },
+  "iron_block": {
+    "java": "minecraft:iron_block",
+    "bedrock": "minecraft:iron_block",
+    "bedrock_states": {},
+    "color": "#cfd0cd"
+  },
+  "glowstone": {
+    "java": "minecraft:glowstone",
+    "bedrock": "minecraft:glowstone",
+    "bedrock_states": {},
+    "color": "#c6a568"
+  },
+  "sea_lantern": {
+    "java": "minecraft:sea_lantern",
+    "bedrock": "minecraft:sea_lantern",
+    "bedrock_states": {},
+    "color": "#b5d4c6"
+  }
+}

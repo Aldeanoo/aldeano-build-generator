@@ -1,0 +1,63 @@
+{
+  "schema": "aldeano-build/v1",
+  "name": "axis_fixture",
+  "size": [
+    3,
+    2,
+    4
+  ],
+  "palette": {
+    "stone": "stone",
+    "gold_block": "gold_block",
+    "bricks": "bricks",
+    "sea_lantern": "sea_lantern",
+    "air": "air"
+  },
+  "ops": [
+    {
+      "op": "set",
+      "at": [
+        0,
+        0,
+        0
+      ],
+      "block": "stone"
+    },
+    {
+      "op": "set",
+      "at": [
+        2,
+        1,
+        3
+      ],
+      "block": "gold_block"
+    },
+    {
+      "op": "set",
+      "at": [
+        1,
+        0,
+        2
+      ],
+      "block": "bricks"
+    },
+    {
+      "op": "set",
+      "at": [
+        0,
+        1,
+        0
+      ],
+      "block": "sea_lantern"
+    },
+    {
+      "op": "set",
+      "at": [
+        1,
+        1,
+        1
+      ],
+      "block": "air"
+    }
+  ]
+}

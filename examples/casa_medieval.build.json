@@ -1,0 +1,921 @@
+{
+  "schema": "aldeano-build/v1",
+  "name": "casa_medieval",
+  "size": [
+    19,
+    19,
+    17
+  ],
+  "palette": {
+    "stone_bricks": "stone_bricks",
+    "oak_planks": "oak_planks",
+    "air": "air",
+    "spruce_planks": "spruce_planks",
+    "dark_oak_planks": "dark_oak_planks",
+    "glass": "glass",
+    "bricks": "bricks",
+    "sea_lantern": "sea_lantern"
+  },
+  "ops": [
+    {
+      "op": "fill",
+      "from": [
+        1,
+        0,
+        1
+      ],
+      "to": [
+        17,
+        1,
+        15
+      ],
+      "block": "stone_bricks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        2,
+        2,
+        2
+      ],
+      "to": [
+        16,
+        8,
+        14
+      ],
+      "block": "oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        3,
+        3,
+        3
+      ],
+      "to": [
+        15,
+        16,
+        13
+      ],
+      "block": "air"
+    },
+    {
+      "op": "fill",
+      "from": [
+        3,
+        2,
+        3
+      ],
+      "to": [
+        15,
+        2,
+        13
+      ],
+      "block": "spruce_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        2,
+        2,
+        2
+      ],
+      "to": [
+        2,
+        8,
+        2
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        2,
+        2,
+        14
+      ],
+      "to": [
+        2,
+        8,
+        14
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        9,
+        2,
+        2
+      ],
+      "to": [
+        9,
+        8,
+        2
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        9,
+        2,
+        14
+      ],
+      "to": [
+        9,
+        8,
+        14
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        16,
+        2,
+        2
+      ],
+      "to": [
+        16,
+        8,
+        2
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        16,
+        2,
+        14
+      ],
+      "to": [
+        16,
+        8,
+        14
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        2,
+        3,
+        2
+      ],
+      "to": [
+        16,
+        3,
+        2
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        2,
+        3,
+        14
+      ],
+      "to": [
+        16,
+        3,
+        14
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        2,
+        3,
+        2
+      ],
+      "to": [
+        2,
+        3,
+        14
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        16,
+        3,
+        2
+      ],
+      "to": [
+        16,
+        3,
+        14
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        2,
+        8,
+        2
+      ],
+      "to": [
+        16,
+        8,
+        2
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        2,
+        8,
+        14
+      ],
+      "to": [
+        16,
+        8,
+        14
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        2,
+        8,
+        2
+      ],
+      "to": [
+        2,
+        8,
+        14
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        16,
+        8,
+        2
+      ],
+      "to": [
+        16,
+        8,
+        14
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        4,
+        4,
+        2
+      ],
+      "to": [
+        6,
+        5,
+        2
+      ],
+      "block": "glass"
+    },
+    {
+      "op": "fill",
+      "from": [
+        12,
+        4,
+        2
+      ],
+      "to": [
+        14,
+        5,
+        2
+      ],
+      "block": "glass"
+    },
+    {
+      "op": "fill",
+      "from": [
+        4,
+        4,
+        14
+      ],
+      "to": [
+        6,
+        5,
+        14
+      ],
+      "block": "glass"
+    },
+    {
+      "op": "fill",
+      "from": [
+        12,
+        4,
+        14
+      ],
+      "to": [
+        14,
+        5,
+        14
+      ],
+      "block": "glass"
+    },
+    {
+      "op": "fill",
+      "from": [
+        2,
+        4,
+        5
+      ],
+      "to": [
+        2,
+        5,
+        7
+      ],
+      "block": "glass"
+    },
+    {
+      "op": "fill",
+      "from": [
+        2,
+        4,
+        10
+      ],
+      "to": [
+        2,
+        5,
+        12
+      ],
+      "block": "glass"
+    },
+    {
+      "op": "fill",
+      "from": [
+        16,
+        4,
+        5
+      ],
+      "to": [
+        16,
+        5,
+        7
+      ],
+      "block": "glass"
+    },
+    {
+      "op": "fill",
+      "from": [
+        16,
+        4,
+        10
+      ],
+      "to": [
+        16,
+        5,
+        12
+      ],
+      "block": "glass"
+    },
+    {
+      "op": "fill",
+      "from": [
+        1,
+        9,
+        1
+      ],
+      "to": [
+        1,
+        9,
+        15
+      ],
+      "block": "spruce_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        17,
+        9,
+        1
+      ],
+      "to": [
+        17,
+        9,
+        15
+      ],
+      "block": "spruce_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        2,
+        9,
+        2
+      ],
+      "to": [
+        16,
+        9,
+        2
+      ],
+      "block": "oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        2,
+        9,
+        14
+      ],
+      "to": [
+        16,
+        9,
+        14
+      ],
+      "block": "oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        2,
+        10,
+        1
+      ],
+      "to": [
+        2,
+        10,
+        15
+      ],
+      "block": "spruce_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        16,
+        10,
+        1
+      ],
+      "to": [
+        16,
+        10,
+        15
+      ],
+      "block": "spruce_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        3,
+        10,
+        2
+      ],
+      "to": [
+        15,
+        10,
+        2
+      ],
+      "block": "oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        3,
+        10,
+        14
+      ],
+      "to": [
+        15,
+        10,
+        14
+      ],
+      "block": "oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        3,
+        11,
+        1
+      ],
+      "to": [
+        3,
+        11,
+        15
+      ],
+      "block": "spruce_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        15,
+        11,
+        1
+      ],
+      "to": [
+        15,
+        11,
+        15
+      ],
+      "block": "spruce_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        4,
+        11,
+        2
+      ],
+      "to": [
+        14,
+        11,
+        2
+      ],
+      "block": "oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        4,
+        11,
+        14
+      ],
+      "to": [
+        14,
+        11,
+        14
+      ],
+      "block": "oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        4,
+        12,
+        1
+      ],
+      "to": [
+        4,
+        12,
+        15
+      ],
+      "block": "spruce_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        14,
+        12,
+        1
+      ],
+      "to": [
+        14,
+        12,
+        15
+      ],
+      "block": "spruce_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        5,
+        12,
+        2
+      ],
+      "to": [
+        13,
+        12,
+        2
+      ],
+      "block": "oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        5,
+        12,
+        14
+      ],
+      "to": [
+        13,
+        12,
+        14
+      ],
+      "block": "oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        5,
+        13,
+        1
+      ],
+      "to": [
+        5,
+        13,
+        15
+      ],
+      "block": "spruce_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        13,
+        13,
+        1
+      ],
+      "to": [
+        13,
+        13,
+        15
+      ],
+      "block": "spruce_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        6,
+        13,
+        2
+      ],
+      "to": [
+        12,
+        13,
+        2
+      ],
+      "block": "oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        6,
+        13,
+        14
+      ],
+      "to": [
+        12,
+        13,
+        14
+      ],
+      "block": "oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        6,
+        14,
+        1
+      ],
+      "to": [
+        6,
+        14,
+        15
+      ],
+      "block": "spruce_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        12,
+        14,
+        1
+      ],
+      "to": [
+        12,
+        14,
+        15
+      ],
+      "block": "spruce_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        7,
+        14,
+        2
+      ],
+      "to": [
+        11,
+        14,
+        2
+      ],
+      "block": "oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        7,
+        14,
+        14
+      ],
+      "to": [
+        11,
+        14,
+        14
+      ],
+      "block": "oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        7,
+        15,
+        1
+      ],
+      "to": [
+        7,
+        15,
+        15
+      ],
+      "block": "spruce_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        11,
+        15,
+        1
+      ],
+      "to": [
+        11,
+        15,
+        15
+      ],
+      "block": "spruce_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        8,
+        15,
+        2
+      ],
+      "to": [
+        10,
+        15,
+        2
+      ],
+      "block": "oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        8,
+        15,
+        14
+      ],
+      "to": [
+        10,
+        15,
+        14
+      ],
+      "block": "oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        8,
+        16,
+        1
+      ],
+      "to": [
+        8,
+        16,
+        15
+      ],
+      "block": "spruce_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        10,
+        16,
+        1
+      ],
+      "to": [
+        10,
+        16,
+        15
+      ],
+      "block": "spruce_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        9,
+        16,
+        2
+      ],
+      "to": [
+        9,
+        16,
+        2
+      ],
+      "block": "oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        9,
+        16,
+        14
+      ],
+      "to": [
+        9,
+        16,
+        14
+      ],
+      "block": "oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        9,
+        17,
+        1
+      ],
+      "to": [
+        9,
+        17,
+        15
+      ],
+      "block": "spruce_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        8,
+        3,
+        2
+      ],
+      "to": [
+        10,
+        5,
+        2
+      ],
+      "block": "air"
+    },
+    {
+      "op": "fill",
+      "from": [
+        6,
+        0,
+        0
+      ],
+      "to": [
+        12,
+        1,
+        1
+      ],
+      "block": "stone_bricks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        7,
+        2,
+        1
+      ],
+      "to": [
+        11,
+        2,
+        1
+      ],
+      "block": "stone_bricks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        13,
+        8,
+        10
+      ],
+      "to": [
+        14,
+        18,
+        11
+      ],
+      "block": "bricks"
+    },
+    {
+      "op": "set",
+      "at": [
+        4,
+        7,
+        4
+      ],
+      "block": "sea_lantern"
+    },
+    {
+      "op": "set",
+      "at": [
+        14,
+        7,
+        12
+      ],
+      "block": "sea_lantern"
+    }
+  ]
+}

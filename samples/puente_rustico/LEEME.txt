@@ -1,0 +1,20 @@
+Aldeano Build Generator 0.1.0 - puente_rustico
+Validacion estructural correcta. No se ha probado esta construccion dentro del juego.
+Edicion solicitada: both. Java: java-26.3. Bedrock: motor minimo 1.26.30.
+
+BEDROCK WINDOWS: /give @s structure_block
+Bloque de estructura > Cargar > Importar > seleccionar puente_rustico.mcstructure > Cargar.
+ALTERNATIVA BEDROCK: abrir puente_rustico.mcpack con Minecraft, activar el pack en el mundo.
+Con permisos de comandos: /structure load aldeano:puente_rustico ~ ~ ~
+La importacion del archivo de estructura desde su boton requiere Windows y ser anfitrion.
+Movil: asociacion del mcpack pendiente de prueba por plataforma. Consola sin ruta directa.
+
+JAVA: copiar puente_rustico.datapack.zip a datapacks/ dentro de la carpeta del mundo.
+No extraerlo ni copiar el ZIP general. Cargar el mundo o ejecutar /reload.
+Con permisos de comandos: /place template aldeano:puente_rustico ~ ~ ~
+El datapack debe corresponder a la version Java elegida al generar.
+
+Las posiciones omitidas conservan el mundo; el aire explicito vacia posiciones.
+Para pruebas, usa un mundo creativo de ensayo con espacio libre y permisos.
+Si actualizas el mismo pack Bedrock, incrementa --pack-version (ejemplo: 1.0.1).
+Conserva el .build.json para pedir revisiones. preview.svg muestra tres proyecciones.

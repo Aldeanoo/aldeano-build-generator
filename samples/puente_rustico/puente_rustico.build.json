@@ -1,0 +1,597 @@
+{
+  "schema": "aldeano-build/v1",
+  "name": "puente_rustico",
+  "size": [
+    23,
+    9,
+    11
+  ],
+  "palette": {
+    "stone_bricks": "stone_bricks",
+    "oak_planks": "oak_planks",
+    "spruce_planks": "spruce_planks",
+    "dark_oak_planks": "dark_oak_planks",
+    "glowstone": "glowstone",
+    "air": "air"
+  },
+  "ops": [
+    {
+      "op": "fill",
+      "from": [
+        0,
+        0,
+        2
+      ],
+      "to": [
+        3,
+        4,
+        8
+      ],
+      "block": "stone_bricks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        10,
+        0,
+        2
+      ],
+      "to": [
+        12,
+        4,
+        8
+      ],
+      "block": "stone_bricks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        19,
+        0,
+        2
+      ],
+      "to": [
+        22,
+        4,
+        8
+      ],
+      "block": "stone_bricks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        4,
+        3,
+        2
+      ],
+      "to": [
+        4,
+        4,
+        8
+      ],
+      "block": "stone_bricks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        9,
+        3,
+        2
+      ],
+      "to": [
+        9,
+        4,
+        8
+      ],
+      "block": "stone_bricks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        13,
+        3,
+        2
+      ],
+      "to": [
+        13,
+        4,
+        8
+      ],
+      "block": "stone_bricks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        18,
+        3,
+        2
+      ],
+      "to": [
+        18,
+        4,
+        8
+      ],
+      "block": "stone_bricks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        5,
+        4,
+        2
+      ],
+      "to": [
+        5,
+        4,
+        8
+      ],
+      "block": "stone_bricks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        8,
+        4,
+        2
+      ],
+      "to": [
+        8,
+        4,
+        8
+      ],
+      "block": "stone_bricks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        14,
+        4,
+        2
+      ],
+      "to": [
+        14,
+        4,
+        8
+      ],
+      "block": "stone_bricks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        17,
+        4,
+        2
+      ],
+      "to": [
+        17,
+        4,
+        8
+      ],
+      "block": "stone_bricks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        0,
+        5,
+        2
+      ],
+      "to": [
+        22,
+        5,
+        8
+      ],
+      "block": "oak_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        0,
+        6,
+        2
+      ],
+      "to": [
+        22,
+        6,
+        2
+      ],
+      "block": "spruce_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        0,
+        6,
+        2
+      ],
+      "to": [
+        0,
+        7,
+        2
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "set",
+      "at": [
+        0,
+        8,
+        2
+      ],
+      "block": "glowstone"
+    },
+    {
+      "op": "fill",
+      "from": [
+        3,
+        6,
+        2
+      ],
+      "to": [
+        3,
+        7,
+        2
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "set",
+      "at": [
+        3,
+        8,
+        2
+      ],
+      "block": "glowstone"
+    },
+    {
+      "op": "fill",
+      "from": [
+        6,
+        6,
+        2
+      ],
+      "to": [
+        6,
+        7,
+        2
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "set",
+      "at": [
+        6,
+        8,
+        2
+      ],
+      "block": "glowstone"
+    },
+    {
+      "op": "fill",
+      "from": [
+        9,
+        6,
+        2
+      ],
+      "to": [
+        9,
+        7,
+        2
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "set",
+      "at": [
+        9,
+        8,
+        2
+      ],
+      "block": "glowstone"
+    },
+    {
+      "op": "fill",
+      "from": [
+        12,
+        6,
+        2
+      ],
+      "to": [
+        12,
+        7,
+        2
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "set",
+      "at": [
+        12,
+        8,
+        2
+      ],
+      "block": "glowstone"
+    },
+    {
+      "op": "fill",
+      "from": [
+        15,
+        6,
+        2
+      ],
+      "to": [
+        15,
+        7,
+        2
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "set",
+      "at": [
+        15,
+        8,
+        2
+      ],
+      "block": "glowstone"
+    },
+    {
+      "op": "fill",
+      "from": [
+        18,
+        6,
+        2
+      ],
+      "to": [
+        18,
+        7,
+        2
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "set",
+      "at": [
+        18,
+        8,
+        2
+      ],
+      "block": "glowstone"
+    },
+    {
+      "op": "fill",
+      "from": [
+        21,
+        6,
+        2
+      ],
+      "to": [
+        21,
+        7,
+        2
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "set",
+      "at": [
+        21,
+        8,
+        2
+      ],
+      "block": "glowstone"
+    },
+    {
+      "op": "fill",
+      "from": [
+        0,
+        6,
+        8
+      ],
+      "to": [
+        22,
+        6,
+        8
+      ],
+      "block": "spruce_planks"
+    },
+    {
+      "op": "fill",
+      "from": [
+        0,
+        6,
+        8
+      ],
+      "to": [
+        0,
+        7,
+        8
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "set",
+      "at": [
+        0,
+        8,
+        8
+      ],
+      "block": "glowstone"
+    },
+    {
+      "op": "fill",
+      "from": [
+        3,
+        6,
+        8
+      ],
+      "to": [
+        3,
+        7,
+        8
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "set",
+      "at": [
+        3,
+        8,
+        8
+      ],
+      "block": "glowstone"
+    },
+    {
+      "op": "fill",
+      "from": [
+        6,
+        6,
+        8
+      ],
+      "to": [
+        6,
+        7,
+        8
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "set",
+      "at": [
+        6,
+        8,
+        8
+      ],
+      "block": "glowstone"
+    },
+    {
+      "op": "fill",
+      "from": [
+        9,
+        6,
+        8
+      ],
+      "to": [
+        9,
+        7,
+        8
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "set",
+      "at": [
+        9,
+        8,
+        8
+      ],
+      "block": "glowstone"
+    },
+    {
+      "op": "fill",
+      "from": [
+        12,
+        6,
+        8
+      ],
+      "to": [
+        12,
+        7,
+        8
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "set",
+      "at": [
+        12,
+        8,
+        8
+      ],
+      "block": "glowstone"
+    },
+    {
+      "op": "fill",
+      "from": [
+        15,
+        6,
+        8
+      ],
+      "to": [
+        15,
+        7,
+        8
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "set",
+      "at": [
+        15,
+        8,
+        8
+      ],
+      "block": "glowstone"
+    },
+    {
+      "op": "fill",
+      "from": [
+        18,
+        6,
+        8
+      ],
+      "to": [
+        18,
+        7,
+        8
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "set",
+      "at": [
+        18,
+        8,
+        8
+      ],
+      "block": "glowstone"
+    },
+    {
+      "op": "fill",
+      "from": [
+        21,
+        6,
+        8
+      ],
+      "to": [
+        21,
+        7,
+        8
+      ],
+      "block": "dark_oak_planks"
+    },
+    {
+      "op": "set",
+      "at": [
+        21,
+        8,
+        8
+      ],
+      "block": "glowstone"
+    },
+    {
+      "op": "fill",
+      "from": [
+        0,
+        6,
+        3
+      ],
+      "to": [
+        22,
+        8,
+        7
+      ],
+      "block": "air"
+    }
+  ]
+}
