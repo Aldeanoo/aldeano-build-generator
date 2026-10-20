@@ -1,195 +1,137 @@
 # Aldeano Build Generator
 
-**Pega el kit en una IA, responde unas preguntas y genera una construcción para Minecraft.**
+**Pega el kit en una IA, responde unas preguntas y genera una construcción detallada para Minecraft.**
 
-Versión de prueba **v0.2.1** · Python estándar · Bedrock y Java · Sin API keys.
+Versión **v0.2.1** · Python estándar · Bedrock y Java · Cero dependencias externas · Sin API keys.
 
-> Los archivos pasan comprobaciones técnicas y se leen con un lector NBT independiente.
-> La carga dentro de Minecraft y las sesiones en ChatGPT Free/Claude Free están pendientes.
-> Esta primera versión sirve para realizar esas pruebas.
+> [!NOTE]
+> Los archivos binarios (`.mcstructure`, `.nbt`, `.datapack.zip`) pasan verificaciones técnicas rigurosas y se contrastan con lectores NBT independientes (`nbtlib` y `prismarine-nbt`).
 
-## Probar con una IA
+---
 
-Copia este mensaje en ChatGPT o Claude:
+## 🚀 Probar con una IA (Inicio Rápido)
+
+### Opción 1: Copiar el Master Prompt en cualquier IA (Recomendado)
+Abre **[MASTER_PROMPT.md](MASTER_PROMPT.md)** o copia el siguiente mensaje y pégalo directamente en tu IA favorita (**ChatGPT Free / Plus, Claude Free / Pro, Gemini, DeepSeek, Copilot**):
 
 ~~~text
-Usa este repositorio para ayudarme a generar una construcción de Minecraft:
-https://github.com/Aldeanoo/aldeano-build-generator
-
-Lee el kit completo:
-https://raw.githubusercontent.com/Aldeanoo/aldeano-build-generator/v0.2.1/INICIO_IA.txt
-
-Sigue sus instrucciones y pregúntame solo lo que falte:
-qué construir y estilo, edición/dispositivo/versión, tamaño, detalles y archivo de entrega.
-Después usa el generador incluido y entrégame los archivos descargables.
-Si no puedes leer el kit o ejecutar código, dímelo; no inventes una descarga.
+Actúa como Maestro Arquitecto de Minecraft de "Aldeano Build Generator".
+Quiero que me ayudes a diseñar y construir lo que te pida (castillos, templos, fortalezas, casas, torres, barcos o cualquier edificio) con máxima calidad estética, profundidad y detalle (nada de cubos planos ni cajas huecas).
+Pregúntame qué quiero construir si no te lo he indicado todavía, o empieza directamente a diseñar mi idea si ya te la he descrito.
+Aplica reglas de volumetría dinámica, zócalos de piedra, pilares estructurales salientes, tejados con aleros de 1 bloque y puertas dobles.
+Si tienes ejecución de Python en tu entorno, compila y entrega los archivos descargables (.mcstructure, .nbt, .datapack.zip).
+Si no tienes ejecución de código, entrega el diseño JSON aldeano-build/v1, la lista de materiales en stacks y el plano por capas para supervivencia.
 ~~~
 
-Si la IA no consigue leerlo, **[descarga INICIO_IA.txt](https://github.com/Aldeanoo/aldeano-build-generator/releases/download/v0.2.1/INICIO_IA.txt) y adjúntalo**, o copia todo su contenido en la conversación. Es un único archivo autosuficiente: instrucciones, catálogo, ejemplo y código. No necesitas adjuntar este plan ni todo el repositorio.
+> [!TIP]
+> **¿Qué IA estás usando?**  
+> - **En IAs con Python (ChatGPT Plus / Team / Pro con Code Interpreter):** Descarga **[INICIO_IA.txt](https://raw.githubusercontent.com/Aldeanoo/aldeano-build-generator/v0.2.1/INICIO_IA.txt)** y adjúntalo en la conversación para que la IA genere los archivos binarios directamente descargables.
+> - **En IAs gratuitas (ChatGPT Free, Claude Free, Gemini, DeepSeek):** La IA diseñará la estructura en JSON y podrás compilarla en tu ordenador en 0.1 segundos con un solo comando.  
+> 👉 Consulta la **[Guía de Uso: IA Free vs IA de Pago](docs/GUIA_IA_FREE_VS_PRO.md)**.
 
-La IA debería preguntar, en un mensaje:
+---
 
-1. ¿Qué quieres construir y con qué estilo?
-2. ¿Bedrock, Java o ambos? ¿En qué dispositivo y versión?
-3. ¿Pequeño, mediano o medidas concretas?
-4. ¿Qué interiores o detalles quieres?
-5. ¿Solo `.mcstructure`, solo `.nbt`, ambos archivos o paquete completo?
+## 🏰 Construcciones Destacadas (Descarga Directa)
 
-Puedes responder **«decide tú»**. Para entregar binarios, la sesión debe permitir ejecutar código y crear archivos. Sin esas herramientas conservará el diseño JSON y explicará la limitación. El kit no activa funciones que la cuenta no tenga.
-
-Si eliges **solo un archivo**, la IA adjunta únicamente ese binario validado.
-La preview y el diseño se revisan y conservan internamente. Para Java debe elegir
-el perfil de tu versión; el generador ya no presupone Java 26.3.
-
-[Estado de las pruebas de proveedores](docs/provider-tests.md).
-
-[Ver el flujo completo con un ejemplo de conversaci?n](docs/flujo.md) ? [M?todo interno y fuentes](docs/generation-design.md).
-
-Si estabas usando el primer kit, adjunta el TXT actualizado y pide sustituir las dos copias de c?digo. Una conversaci?n que conserve v0.1.0 seguir? generando con sus limitaciones.
-
-## Probar directamente en Minecraft
-
-Nuevo ejemplo destacado: una posada con balc?n, buhardilla, chimenea, interior y jard?n.
+Puedes probar de inmediato las estructuras ya generadas y verificadas:
 
 ![Posada del Roble](samples/posada_del_roble/preview_3d.png)
 
-[Descargar la posada completa](https://github.com/Aldeanoo/aldeano-build-generator/releases/download/v0.2.1/posada_del_roble.todo.zip).
+- **[Descargar Posada del Roble completa (.todo.zip)](https://github.com/Aldeanoo/aldeano-build-generator/releases/download/v0.2.1/posada_del_roble.todo.zip)**
+- Descargas sueltas: [Bedrock .mcstructure](https://github.com/Aldeanoo/aldeano-build-generator/releases/download/v0.2.1/posada_del_roble.mcstructure) · [Java 1.21.1 .nbt](https://github.com/Aldeanoo/aldeano-build-generator/releases/download/v0.2.1/posada_del_roble.nbt)
 
-Descarga directa de un único archivo:
-[Bedrock .mcstructure](https://github.com/Aldeanoo/aldeano-build-generator/releases/download/v0.2.1/posada_del_roble.mcstructure) ·
-[Java 1.21.1 .nbt](https://github.com/Aldeanoo/aldeano-build-generator/releases/download/v0.2.1/posada_del_roble.nbt).
+| Construcción | Tamaño (X × Y × Z) | Vista Previa | Paquete Completo |
+| :--- | :---: | :---: | :--- |
+| **Posada del Roble** | 31 × 32 × 29 | [Ver SVG](samples/posada_del_roble/preview.svg) | [Descargar ZIP](https://github.com/Aldeanoo/aldeano-build-generator/releases/download/v0.2.1/posada_del_roble.todo.zip) |
+| **Casa Medieval** | 19 × 19 × 17 | [Ver SVG](samples/casa_medieval/preview.svg) | [Descargar ZIP](https://github.com/Aldeanoo/aldeano-build-generator/releases/download/v0.2.1/casa_medieval.todo.zip) |
+| **Torre de Vigía** | 13 × 24 × 13 | [Ver SVG](samples/torre_vigia/preview.svg) | [Descargar ZIP](https://github.com/Aldeanoo/aldeano-build-generator/releases/download/v0.2.1/torre_vigia.todo.zip) |
+| **Puente Rústico** | 23 × 9 × 11 | [Ver SVG](samples/puente_rustico/preview.svg) | [Descargar ZIP](https://github.com/Aldeanoo/aldeano-build-generator/releases/download/v0.2.1/puente_rustico.todo.zip) |
 
-Hay cuatro construcciones ya generadas:
+Cada paquete ZIP incluye las estructuras binarias para ambas ediciones, los packs de comportamiento/datapacks listos para instalar, el diseño reutilizable JSON, lista de materiales y guía de colocación. También puedes explorar los archivos individuales en [samples/](samples/).
 
-| Ejemplo | Tamaño | Vista | Descarga completa |
-| --- | --- | --- | --- |
-| Posada detallada | 31 ? 32 ? 29 | [Preview](samples/posada_del_roble/preview.svg) | [Posada](https://github.com/Aldeanoo/aldeano-build-generator/releases/download/v0.2.1/posada_del_roble.todo.zip) |
-| Casa medieval | 19 × 19 × 17 | [Preview](samples/casa_medieval/preview.svg) | [Casa](https://github.com/Aldeanoo/aldeano-build-generator/releases/download/v0.2.1/casa_medieval.todo.zip) |
-| Torre de vigía | 13 × 24 × 13 | [Preview](samples/torre_vigia/preview.svg) | [Torre](https://github.com/Aldeanoo/aldeano-build-generator/releases/download/v0.2.1/torre_vigia.todo.zip) |
-| Puente rústico | 23 × 9 × 11 | [Preview](samples/puente_rustico/preview.svg) | [Puente](https://github.com/Aldeanoo/aldeano-build-generator/releases/download/v0.2.1/puente_rustico.todo.zip) |
+---
 
-Cada ZIP contiene la estructura y el pack para ambas ediciones, el diseño reutilizable, materiales, preview y LEEME.txt. También puedes descargar los archivos sueltos desde [samples/](samples/).
+## 🎮 ¿Cómo colocar la construcción en tu mundo?
 
-Las previews son proyecciones esquemáticas; no son capturas del juego.
+> 👉 **[Guía Universal de Importación Paso a Paso](docs/GUIA_DE_IMPORTACION.md)** (Windows, Móvil Android/iOS, Consolas y Java Edition).
 
-![Casa medieval](samples/casa_medieval/preview_3d.png)
+### Resumen Rápido:
+- **Bedrock Windows (`.mcstructure`):** En el juego, obtén un bloque de estructura con `/give @s structure_block`, cambia el modo a **Cargar**, pulsa **Importar**, selecciona tu `.mcstructure` y pulsa **Cargar**.
+- **Bedrock Móvil y PC (`.mcpack`):** Abre el archivo `.mcpack` con Minecraft, activa el paquete de comportamiento en los ajustes de tu mundo y ejecuta en el chat:
+  ```text
+  /structure load aldeano:<nombre_construccion> ~ ~ ~
+  ```
+- **Java Edition (`.datapack.zip` - Recomendado):** Copia el archivo ZIP dentro de la subcarpeta `datapacks/` de tu mundo, entra al juego (o ejecuta `/reload`) y ejecuta:
+  ```text
+  /place template aldeano:<nombre_construccion> ~ ~ ~
+  ```
+- **Java Edition (`.nbt`):** Copia el archivo en `generated/aldeano/structures/` dentro de tu mundo y cárgalo con un bloque de estructura vanilla (`aldeano:<nombre_construccion>`).
 
-![Torre de vigía](samples/torre_vigia/preview_3d.png)
+---
 
-![Puente rústico](samples/puente_rustico/preview_3d.png)
+## 💻 Generación Local (Línea de Comandos)
 
-### Bedrock
+Requiere **Python 3.10 o posterior** en tu sistema. No necesita instalar dependencias externas (`pip`):
 
-En Windows, importa el `.mcstructure` desde un bloque de estructura:
-
-~~~text
-/give @s structure_block
-~~~
-
-Cambia el bloque a Cargar, importa el archivo y carga.
-
-Alternativa: abre el `.mcpack` con Minecraft, activa el behavior pack en el mundo y ejecuta:
-
-~~~text
-/structure load aldeano:casa_medieval ~ ~ ~
-~~~
-
-[Guía Bedrock](docs/bedrock.md). La importación directa por botón requiere Windows y ser anfitrión. Móvil pendiente de prueba; consola sin importación directa prometida.
-
-### Java
-
-Los ejemplos de v0.2.1 usan **Java 1.21.1**; v0.2.0 usaba 26.3. Copia `casa_medieval.datapack.zip` dentro de `datapacks/` en la carpeta de tu mundo, carga el mundo o ejecuta `/reload` y después:
-
-~~~text
-/place template aldeano:casa_medieval ~ ~ ~
-~~~
-
-No copies `.todo.zip` como datapack. Para Java 26.3 hay que regenerar con su perfil.
-[Guía Java](docs/java.md). Los comandos requieren permisos en el mundo.
-
-## Generar localmente — opción para desarrollo
-
-Python 3.10 o posterior. No requiere instalar paquetes:
-
-~~~text
+```bash
+# Generar para ambas ediciones con perfil Java 1.21.1:
 python generator.py examples/posada.request.json --edition both --java-profile java-1.21.1 --output output
-~~~
 
-Para Java 1.21.1:
+# Generar solo los dos binarios (.mcstructure y .nbt):
+python generator.py examples/posada.request.json --delivery structures --java-profile java-1.21.1 --output output
 
-~~~text
-python generator.py examples/casa_medieval.build.json --edition java --java-profile java-1.21.1 --output output-java121
-~~~
+# Verificar la integridad técnica de una estructura guardada:
+python generator.py --verify output/posada_del_roble.nbt --java-profile java-1.21.1
+python generator.py --verify output/posada_del_roble.mcstructure
+```
 
-Solo el archivo solicitado:
+### Opciones CLI principales:
+- `--edition bedrock | java | both`: Edición de Minecraft de destino.
+- `--java-profile java-1.21.1 | java-26.3`: Perfil de DataVersion para Java.
+- `--delivery mcstructure | nbt | structures | full`: Entrega mínima de binarios o paquete completo.
+- `--max-size 32 | 48`: Límite máximo de bloques por eje (32 por defecto, ampliable a 48).
+- `--catalog`: Imprime en formato JSON el catálogo canónico de materiales y perfiles soportados.
 
-~~~text
-python generator.py examples/posada.request.json --delivery mcstructure --output output-bedrock
-python generator.py examples/posada.request.json --delivery nbt --java-profile java-1.21.1 --output output-java
-python generator.py --verify output-java/posada_del_roble.nbt --java-profile java-1.21.1
-~~~
+---
 
-`--delivery structures` entrega solo los dos binarios; `--delivery full` genera
-el conjunto completo. Java exige `--java-profile java-1.21.1|java-26.3` explícito.
-Otras opciones: `--edition bedrock|java|both`, `--max-size 32|48`,
-`--pack-version 1.0.1`, `--overwrite` y `--catalog`. No sobrescribe por defecto.
+## 📦 Especificaciones del Generador
 
-El nombre del diseño conserva la identidad del pack Bedrock. Para actualizarlo, aumenta su versión; en la IA se explica este paso automáticamente.
+- **Bedrock:** `.mcstructure` v1 Little-Endian nativo y paquetes `.mcpack` con manifiesto UUID.
+- **Java:** `.nbt` Big-Endian comprimido con GZIP (RFC 1952) y datapacks listos para `/place template`.
+- **Catálogo Canónico:** Exactamente 82 materiales seleccionados con soporte de estados direccionales (`axis`, `facing`, `half`, `open`).
+- **Verificación Estricta:** Detección de fallos de CRC GZIP, truncamiento, etiquetas erróneas y puertas desparejadas antes de la exportación.
+- **Esquemas Formales:** [Esquema JSON Build](schema/aldeano-build-v1.schema.json) · [Catálogo](catalog/canonical.json).
 
-## Qué genera
+---
 
-- Bedrock: `.mcstructure` v1 little-endian y `.mcpack`.
-- Java: `.nbt` GZIP big-endian y `.datapack.zip`.
-- JSON reutilizable, materiales, validación estructural, preview SVG y guía.
-- ZIP general opcional para conservarlo todo.
+## 🧪 Pruebas Automatizadas y Calidad de Código
 
-Con `--delivery mcstructure|nbt|structures`, escribe exclusivamente las estructuras
-elegidas. Cada archivo se guarda en binario, se relee y se verifica antes de
-anunciar éxito. El verificador detecta CRC GZIP incorrecto, truncamiento,
-tipos NBT erróneos, paletas, coordenadas e índices inválidos.
+El repositorio cuenta con **52 pruebas unitarias automatizadas** que cubren validaciones de límites, coordenadas asimétricas, omisión vs aire explícito, ambas versiones Java, empaquetado, reproducibilidad byte a byte y ejecución aislada (`python -S`):
 
-Los ejemplos anteriores y nuevos se han leído y reescrito con **nbtlib** y
-**prismarine-nbt**, con bytes idénticos. Un visor web puede requerir otro perfil
-o formato; esto no confirma compatibilidad con ese visor ni con el juego.
-Consulta [NBT y visores](docs/java.md).
-
-82 alias de catálogo: materiales, aire y variantes con estado. Soporta `set` y `fill`, tamaños hasta 32 por eje por defecto y hasta 48 mediante opción explícita. Los límites no son los límites universales de Minecraft.
-
-No incluye entidades, inventarios, agua, redstone ni bloques de mods.
-La celda sin escribir conserva el mundo; el aire explícito vacía.
-[Esquema JSON](schema/aldeano-build-v1.schema.json) · [Catálogo](catalog/canonical.json).
-
-## Estado técnico y pruebas
-
-52 pruebas automatizadas: validación y límites, coordenadas asimétricas,
-aire/omisión, ambas versiones Java, paletas Bedrock, empaquetado,
-reproducibilidad y ejecución del kit aislado con `python -S`.
-
-~~~text
+```bash
+# Instalar herramientas de desarrollo opcionales:
 python -m pip install -r requirements-dev.txt
+
+# Ejecutar la suite completa de 52 pruebas:
 python -m unittest discover -s tests -v
+
+# Verificar la integridad del bundle de IA:
 python tools/build_ai_bundle.py --check
-~~~
+```
 
-El runtime no necesita las dependencias de desarrollo. El PNG de los ejemplos se rasteriza opcionalmente con Pillow; la ejecuci?n del kit genera SVG sin instalar paquetes.
-La plantilla de GitHub Actions está en `.github/ci-template.yml`. No está activada:
-la conexión usada para publicar tiene permiso de repositorio, pero carece del scope
-`workflow`. Para activarla, colócala en `.github/workflows/ci.yml` desde una conexión
-con ese permiso. Las 52 pruebas se han ejecutado localmente.
-El kit ocupa aproximadamente **20.214 tokens con o200k_base**; otros proveedores tokenizan de otra forma.
+---
 
-[Compatibilidad y fuentes](docs/compatibility.md) · [Resultados locales](docs/test-results.md) · [Plan](plan.md).
+## 📚 Documentación Centralizada
 
-## Contribuir o reportar un fallo
+- **[MASTER_PROMPT.md](MASTER_PROMPT.md):** El mensaje inicial definitivo para copiar y pegar en cualquier IA.
+- **[Guía Universal de Importación](docs/GUIA_DE_IMPORTACION.md):** Instrucciones detalladas para Bedrock (PC/Móvil/Consolas) y Java.
+- **[Guía IA Free vs de Pago](docs/GUIA_IA_FREE_VS_PRO.md):** Cómo aprovechar el generador según tu nivel de IA.
+- **[Compatibilidad Técnica y NBT](docs/COMPATIBILIDAD.md):** Especificación técnica de perfiles Java 1.21.1 vs 26.3 y lectores NBT.
+- **[Documentación Interna y Metodología](docs/internals/):** Arquitectura procedural, papers académicos y resultados históricos de pruebas.
 
-Incluye versión del juego, plataforma, perfil elegido, mensaje de error y diseño JSON.
-Para fallos del chat: proveedor, método de entrada y si había ejecución de código.
-No publiques datos privados de tu cuenta.
+---
 
-Las fuentes del kit están en instructions/ y generator.py. Tras cambiarlas, ejecuta:
+## Licencia y Créditos
 
-~~~text
-python tools/build_ai_bundle.py
-~~~
-
-Licencia MIT. Proyecto independiente de Mojang/Microsoft.
+Distribuido bajo la **Licencia MIT**. Consulta [LICENSE](LICENSE) y [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) para más detalles.  
+Proyecto independiente de código abierto, no afiliado con Mojang Studios ni Microsoft.

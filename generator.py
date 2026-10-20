@@ -479,9 +479,19 @@ def read_structure(blob, file_type, java_profile=None):
 
 def verify_structure(blob, file_type, java_profile=None):
     root = read_structure(blob, file_type, java_profile)
-    return {"passed": True, "format": file_type, "bytes": len(blob), "size": root["size"],
-            "data_version": root.get("DataVersion"),
-            "sha256": hashlib.sha256(blob).hexdigest(), "minecraft_tested": False}
+    detected_profile = java_profile
+    if file_type == "nbt" and not detected_profile:
+        dv = root.get("DataVersion")
+        if dv == 3955:
+            detected_profile = "java-1.21.1"
+        elif dv == 5023:
+            detected_profile = "java-26.3"
+    res = {"passed": True, "format": file_type, "bytes": len(blob), "size": root["size"],
+           "data_version": root.get("DataVersion"),
+           "sha256": hashlib.sha256(blob).hexdigest(), "minecraft_tested": False}
+    if detected_profile:
+        res["java_profile"] = detected_profile
+    return res
 
 
 def export_mcstructure(volume):
@@ -875,31 +885,42 @@ def generate(build, edition=None, java_profile=DEFAULT_JAVA_PROFILE, max_size=32
                                          if m != "air") + "\n").encode("utf-8")
     outputs["preview.svg"] = preview_svg(volume)
     outputs["preview_planos.svg"] = preview_ortho_svg(volume)
-    help_text = f"""Aldeano Build Generator {VERSION} - {name}
-Validacion estructural correcta. No se ha probado esta construccion dentro del juego.
-Edicion solicitada: {edition}. Java: {java_profile}. Bedrock: motor minimo 1.26.30.
-
-BEDROCK WINDOWS: /give @s structure_block
-Bloque de estructura > Cargar > Importar > seleccionar {name}.mcstructure > Cargar.
-ALTERNATIVA BEDROCK: abrir {name}.mcpack con Minecraft, activar el pack en el mundo.
-Con permisos de comandos: /structure load aldeano:{name} ~ ~ ~
-La importacion del archivo de estructura desde su boton requiere Windows y ser anfitrion.
-Movil: asociacion del mcpack pendiente de prueba por plataforma. Consola sin ruta directa.
-
-JAVA: copiar {name}.datapack.zip a datapacks/ dentro de la carpeta del mundo.
-No extraerlo ni copiar el ZIP general. Cargar el mundo o ejecutar /reload.
-Con permisos de comandos: /place template aldeano:{name} ~ ~ ~
-El datapack debe corresponder a la version Java elegida al generar.
-NBT SUELTO: copiar {name}.nbt a generated/aldeano/structures/ dentro del mundo.
-En un bloque de estructura Java, modo Cargar, usar aldeano:{name}.
-No es un schematic de WorldEdit ni un archivo de Litematica.
-
-Las posiciones omitidas conservan el mundo; el aire explicito vacia posiciones.
-Para pruebas, usa un mundo creativo de ensayo con espacio libre y permisos.
-Si actualizas el mismo pack Bedrock, incrementa --pack-version (ejemplo: 1.0.1).
-Conserva el .build.json o .request.json para revisiones. preview.svg muestra una vista 3D.
-preview_planos.svg contiene las tres proyecciones. revision.json incluye comprobaciones orientativas.
-"""
+    help_parts = [
+        f"Aldeano Build Generator {VERSION} - {name}",
+        "Validacion estructural correcta. No se ha probado esta construccion dentro del juego.",
+        f"Edicion solicitada: {edition}." + (f" Java: {java_profile}." if edition != "bedrock" else "") + (" Bedrock: motor minimo 1.26.30." if edition != "java" else ""),
+        ""
+    ]
+    if edition in ("bedrock", "both"):
+        help_parts.extend([
+            "BEDROCK WINDOWS: /give @s structure_block",
+            f"Bloque de estructura > Cargar > Importar > seleccionar {name}.mcstructure > Cargar.",
+            f"ALTERNATIVA BEDROCK: abrir {name}.mcpack con Minecraft, activar el pack en el mundo.",
+            f"Con permisos de comandos: /structure load aldeano:{name} ~ ~ ~",
+            "La importacion del archivo de estructura desde su boton requiere Windows y ser anfitrion.",
+            "Movil: asociacion del mcpack pendiente de prueba por plataforma. Consola sin ruta directa.",
+            ""
+        ])
+    if edition in ("java", "both"):
+        help_parts.extend([
+            f"JAVA: copiar {name}.datapack.zip a datapacks/ dentro de la carpeta del mundo.",
+            "No extraerlo ni copiar el ZIP general. Cargar el mundo o ejecutar /reload.",
+            f"Con permisos de comandos: /place template aldeano:{name} ~ ~ ~",
+            "El datapack debe corresponder a la version Java elegida al generar.",
+            f"NBT SUELTO: copiar {name}.nbt a generated/aldeano/structures/ dentro del mundo.",
+            f"En un bloque de estructura Java, modo Cargar, usar aldeano:{name}.",
+            "No es un schematic de WorldEdit ni un archivo de Litematica.",
+            ""
+        ])
+    help_parts.extend([
+        "Las posiciones omitidas conservan el mundo; el aire explicito vacia posiciones.",
+        "Para pruebas, usa un mundo creativo de ensayo con espacio libre y permisos.",
+        "Si actualizas el mismo pack Bedrock, incrementa --pack-version (ejemplo: 1.0.1).",
+        "Conserva el .build.json o .request.json para revisiones. preview.svg muestra una vista 3D.",
+        "preview_planos.svg contiene las tres proyecciones. revision.json incluye comprobaciones orientativas.",
+        ""
+    ])
+    help_text = "\n".join(help_parts)
     outputs["LEEME.txt"] = help_text.encode("utf-8")
     outputs[name + ".todo.zip"] = _zip(outputs)
     return outputs, report

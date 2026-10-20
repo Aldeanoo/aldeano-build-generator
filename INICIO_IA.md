@@ -6,16 +6,15 @@ Usa el código de ESTA versión; sustituye copias antiguas en tu entorno.
 
 ## Inicio: una ronda de preguntas
 
-Pregunta solo lo que falte, en un mensaje:
-1. ¿Qué quieres construir y con qué estilo?
+Pregunta solo lo que falte, en un mensaje conciso:
+1. ¿Qué quieres construir y con qué estilo? (Cualquier idea: castillo, templo, catedral, fortaleza, faro, casa moderna, cabaña, puente, barco, etc.).
 2. ¿Bedrock, Java o ambos? ¿Dispositivo y versión, si la sabes?
 3. ¿Qué tamaño o espacio disponible tienes?
 4. ¿Qué interiores, decoración o detalles son imprescindibles?
 5. ¿Quieres solo .mcstructure (Bedrock), solo .nbt (Java), ambos archivos
    o el paquete completo con preview, materiales y diseño reutilizable?
 
-Reutiliza lo respondido. «Decide tú»: posada medieval, ambos, 31 × 32 × 29,
-con jardín, balcón, buhardilla, chimenea e interior; solo las dos estructuras.
+No ofrezcas construcciones por defecto ni limites la creatividad: el usuario puede pedir cualquier cosa y el diseño se crea a su medida. Si el usuario ya describió su proyecto en su mensaje inicial, NO repitas lo que ya respondió. Si faltan datos técnicos (como edición o tamaño), asume valores óptimos y comunícalos con naturalidad.
 Si pide un formato concreto, ya eligió edición y entrega: no lo preguntes otra vez.
 Pregunta la versión Java si falta: los perfiles disponibles son 1.21.1 y 26.3.
 «Decide tú» sin versión: usa explícitamente la base 1.21.1 y comunícalo;
@@ -81,6 +80,7 @@ Extremos inclusivos; coordenadas locales enteras dentro de size.
 Última escritura gana. Air vacía; omisión conserva el mundo.
 Máximo 512 operaciones, 64 alias y 4 millones de escrituras.
 Hasta 32 por eje; 48 con opción explícita.
+Catálogo cerrado: solo usa los 82 materiales incluidos. No existen antorchas, fogatas, cofres, mesas de crafteo, camas ni escaleras de roble o piedra. Para iluminación usa lantern o lantern_hanging; para escaleras solo spruce, stone_brick o deepslate_tile; para puertas solo spruce_door_lower y spruce_door_upper.
 
 ## Materiales con estado
 
@@ -102,7 +102,7 @@ Respeta la entrega elegida. «Solo .nbt» significa un .nbt descargable;
 «solo .mcstructure», un .mcstructure. No adjuntes packs, ZIP, JSON, materiales
 ni previews si no los pidió. Para ambos, solo los dos binarios.
 Conserva el diseño y la revisión internamente para cambios posteriores.
-Para el paquete completo, adjunta el conjunto y muestra preview.svg si puedes.
+Para el paquete completo, adjunta el conjunto y muestra preview.svg si puedes (no transcribas el código SVG crudo en el chat para no colapsar la respuesta).
 Resume dimensiones, perfil y validación en una frase.
 Comprueba el archivo REAL guardado con --verify antes de adjuntarlo.
 Un .nbt de estructura Java no es un schematic ni un archivo de Litematica.
@@ -111,7 +111,7 @@ verifica GZIP, NBT y perfil, y registra visor, versión y error cuando se conozc
 
 Solo afirma ejecuciones y validaciones que hayas realizado.
 La carga real en Minecraft sigue pendiente: no la declares probada.
-Sin herramientas, entrega el JSON y explica que falta convertirlo.
+Sin herramientas de ejecución de código (como en chats de solo texto o tiers gratuitos), NO rechaces la petición ni detengas la conversación: entrega el diseño completo en formato BuildSpec JSON `aldeano-build/v1`, la lista de materiales en stacks/cofres para supervivencia, el desglose de colocación por capas (capa Y=0 a Y=máx) y el comando de 1 línea para compilarlo con Python nativo en el PC del usuario.
 No inventes enlaces. Si no leíste todo, pide INICIO_IA.txt completo.
 
 Para cambios, conserva nombre y solicitud; modifica theme/features o BuildSpec.
@@ -125,19 +125,21 @@ No necesita pip, API keys ni dependencias externas para generar.
 Si el TXT adjunto existe como archivo en tu entorno, extrae los bloques por programa:
 busca cada encabezado real al PRINCIPIO de línea, toma su bloque
 Python hasta la siguiente línea de cierre y guárdalo con ese nombre. Así no necesitas
-volver a escribir todo el código en una respuesta. Usa la ruta real del adjunto.
+volver a escribir todo el código en una respuesta. Detecta la ruta real automáticamente o usa la indicada.
 Para extraerlos sin volver a emitir miles de tokens de código:
 
 ~~~python
-import re
+import glob, re
 from pathlib import Path
-kit = Path(RUTA_REAL_DEL_TXT).read_text(encoding="utf-8-sig")
+candidates = list(Path("/mnt/data").glob("*INICIO_IA*.txt")) + list(Path(".").glob("*INICIO_IA*.txt")) + list(Path(".").glob("*.txt"))
+txt_path = candidates[0] if candidates else Path("INICIO_IA.txt")
+kit = txt_path.read_text(encoding="utf-8-sig").replace("\r\n", "\n")
 for name in ("architect.py", "generator.py"):
-    pattern = r"(?ms)^## " + re.escape(name) + r" -[^\n]*\n+```python\n(.*?)^```[ \t]*$"
+    pattern = r"(?ms)^## " + re.escape(name) + r" -[^\r\n]*\r?\n+```python\r?\n(.*?)^```[ \t\r]*$"
     match = re.search(pattern, kit)
     if match is None:
         raise ValueError("Falta el bloque completo de " + name)
-    Path(name).write_text(match.group(1).rstrip()+"\n", encoding="utf-8")
+    Path(name).write_text(match.group(1).rstrip() + "\n", encoding="utf-8")
 ~~~
 
 Si solo puedes acceder por red desde Python, descarga los dos archivos de la misma
@@ -159,7 +161,7 @@ Hasta 48 bloques por eje: --max-size 48 solo si hace falta.
 Para revisiones utiliza otra carpeta de salida.
 Si mantienes el nombre del pack Bedrock, aumenta --pack-version 1.0.1.
 
-4. Lee work/validacion.json y work/revision.json. Revisa work/preview.svg si puedes.
+4. Lee work/validacion.json y work/revision.json. Revisa work/preview.svg si tu entorno lo permite (no transcribas el texto SVG crudo en el chat para no exceder los límites de tokens).
 5. Si falla el diseño, corrígelo y vuelve a ejecutar.
 6. Prepara la entrega elegida en otra carpeta, conservando work solo internamente:
 
@@ -987,9 +989,19 @@ def read_structure(blob, file_type, java_profile=None):
 
 def verify_structure(blob, file_type, java_profile=None):
     root = read_structure(blob, file_type, java_profile)
-    return {"passed": True, "format": file_type, "bytes": len(blob), "size": root["size"],
-            "data_version": root.get("DataVersion"),
-            "sha256": hashlib.sha256(blob).hexdigest(), "minecraft_tested": False}
+    detected_profile = java_profile
+    if file_type == "nbt" and not detected_profile:
+        dv = root.get("DataVersion")
+        if dv == 3955:
+            detected_profile = "java-1.21.1"
+        elif dv == 5023:
+            detected_profile = "java-26.3"
+    res = {"passed": True, "format": file_type, "bytes": len(blob), "size": root["size"],
+           "data_version": root.get("DataVersion"),
+           "sha256": hashlib.sha256(blob).hexdigest(), "minecraft_tested": False}
+    if detected_profile:
+        res["java_profile"] = detected_profile
+    return res
 
 
 def export_mcstructure(volume):
@@ -1383,31 +1395,42 @@ def generate(build, edition=None, java_profile=DEFAULT_JAVA_PROFILE, max_size=32
                                          if m != "air") + "\n").encode("utf-8")
     outputs["preview.svg"] = preview_svg(volume)
     outputs["preview_planos.svg"] = preview_ortho_svg(volume)
-    help_text = f"""Aldeano Build Generator {VERSION} - {name}
-Validacion estructural correcta. No se ha probado esta construccion dentro del juego.
-Edicion solicitada: {edition}. Java: {java_profile}. Bedrock: motor minimo 1.26.30.
-
-BEDROCK WINDOWS: /give @s structure_block
-Bloque de estructura > Cargar > Importar > seleccionar {name}.mcstructure > Cargar.
-ALTERNATIVA BEDROCK: abrir {name}.mcpack con Minecraft, activar el pack en el mundo.
-Con permisos de comandos: /structure load aldeano:{name} ~ ~ ~
-La importacion del archivo de estructura desde su boton requiere Windows y ser anfitrion.
-Movil: asociacion del mcpack pendiente de prueba por plataforma. Consola sin ruta directa.
-
-JAVA: copiar {name}.datapack.zip a datapacks/ dentro de la carpeta del mundo.
-No extraerlo ni copiar el ZIP general. Cargar el mundo o ejecutar /reload.
-Con permisos de comandos: /place template aldeano:{name} ~ ~ ~
-El datapack debe corresponder a la version Java elegida al generar.
-NBT SUELTO: copiar {name}.nbt a generated/aldeano/structures/ dentro del mundo.
-En un bloque de estructura Java, modo Cargar, usar aldeano:{name}.
-No es un schematic de WorldEdit ni un archivo de Litematica.
-
-Las posiciones omitidas conservan el mundo; el aire explicito vacia posiciones.
-Para pruebas, usa un mundo creativo de ensayo con espacio libre y permisos.
-Si actualizas el mismo pack Bedrock, incrementa --pack-version (ejemplo: 1.0.1).
-Conserva el .build.json o .request.json para revisiones. preview.svg muestra una vista 3D.
-preview_planos.svg contiene las tres proyecciones. revision.json incluye comprobaciones orientativas.
-"""
+    help_parts = [
+        f"Aldeano Build Generator {VERSION} - {name}",
+        "Validacion estructural correcta. No se ha probado esta construccion dentro del juego.",
+        f"Edicion solicitada: {edition}." + (f" Java: {java_profile}." if edition != "bedrock" else "") + (" Bedrock: motor minimo 1.26.30." if edition != "java" else ""),
+        ""
+    ]
+    if edition in ("bedrock", "both"):
+        help_parts.extend([
+            "BEDROCK WINDOWS: /give @s structure_block",
+            f"Bloque de estructura > Cargar > Importar > seleccionar {name}.mcstructure > Cargar.",
+            f"ALTERNATIVA BEDROCK: abrir {name}.mcpack con Minecraft, activar el pack en el mundo.",
+            f"Con permisos de comandos: /structure load aldeano:{name} ~ ~ ~",
+            "La importacion del archivo de estructura desde su boton requiere Windows y ser anfitrion.",
+            "Movil: asociacion del mcpack pendiente de prueba por plataforma. Consola sin ruta directa.",
+            ""
+        ])
+    if edition in ("java", "both"):
+        help_parts.extend([
+            f"JAVA: copiar {name}.datapack.zip a datapacks/ dentro de la carpeta del mundo.",
+            "No extraerlo ni copiar el ZIP general. Cargar el mundo o ejecutar /reload.",
+            f"Con permisos de comandos: /place template aldeano:{name} ~ ~ ~",
+            "El datapack debe corresponder a la version Java elegida al generar.",
+            f"NBT SUELTO: copiar {name}.nbt a generated/aldeano/structures/ dentro del mundo.",
+            f"En un bloque de estructura Java, modo Cargar, usar aldeano:{name}.",
+            "No es un schematic de WorldEdit ni un archivo de Litematica.",
+            ""
+        ])
+    help_parts.extend([
+        "Las posiciones omitidas conservan el mundo; el aire explicito vacia posiciones.",
+        "Para pruebas, usa un mundo creativo de ensayo con espacio libre y permisos.",
+        "Si actualizas el mismo pack Bedrock, incrementa --pack-version (ejemplo: 1.0.1).",
+        "Conserva el .build.json o .request.json para revisiones. preview.svg muestra una vista 3D.",
+        "preview_planos.svg contiene las tres proyecciones. revision.json incluye comprobaciones orientativas.",
+        ""
+    ])
+    help_text = "\n".join(help_parts)
     outputs["LEEME.txt"] = help_text.encode("utf-8")
     outputs[name + ".todo.zip"] = _zip(outputs)
     return outputs, report
@@ -1510,6 +1533,6 @@ if __name__ == "__main__":
 ```
 
 Kit v0.2.1. Fuente: https://github.com/Aldeanoo/aldeano-build-generator. Licencia MIT. Copyright (c) 2026 Aldeanoo.
-SHA-256 de generator.py: f4d5239974b8c28c6eb4af56aa835e26ba1b219c1aab364845d6a28010dce6c4
+SHA-256 de generator.py: fedb0c8fb834ae812d12759da1bbd355ce241fb6422a355f7c8e9ba53a23cedf
 SHA-256 de architect.py: 2d5ad55691babc18e2976feffca8aed550caa61a47690936ddbcfc5524e0e5f1
 Comienza ahora con las preguntas que falten; no des una explicacion larga del funcionamiento del kit.

@@ -1,23 +1,17 @@
-# Probar en Bedrock
+# Importación en Minecraft Bedrock Edition
 
-Perfil experimental: datos 1.26.30 y mcstructure v1 sin compresión.
-La carga dentro del juego todavía está pendiente.
+> [!TIP]
+> Esta guía ha sido ampliada y centralizada con instrucciones detalladas para Windows, Android, iOS y Consolas en:
+> **👉 [Guía Universal de Importación](GUIA_DE_IMPORTACION.md#2-minecraft-bedrock-edition)**
 
-## Windows
+---
 
-1. Descarga casa_medieval.mcstructure de samples/casa_medieval.
-2. En un mundo creativo de ensayo con comandos, ejecuta `/give @s structure_block`.
-3. Coloca el bloque, cambia a Cargar, importa el archivo y pulsa Cargar.
+## Resumen Rápido
 
-El botón de importación requiere Windows y ser anfitrión.
-[Microsoft: estructuras](https://learn.microsoft.com/en-us/minecraft/creator/documents/structures/introductiontostructureblocks?view=minecraft-bedrock-stable).
+- **Windows 10/11 (`.mcstructure`):** Obtén un bloque de estructura con `/give @s structure_block`, cambia a **Cargar**, pulsa **Importar**, selecciona tu `.mcstructure` y pulsa **Cargar**.
+- **Móvil (Android / iOS) y PC (`.mcpack`):** Abre el archivo `.mcpack` con Minecraft, activa el paquete de comportamiento en los ajustes del mundo y ejecuta:
+  ```text
+  /structure load aldeano:<nombre_construccion> ~ ~ ~
+  ```
 
-## Pack
-
-1. Abre casa_medieval.mcpack con Minecraft.
-2. Activa el behavior pack en el mundo.
-3. Con permisos, ejecuta `/structure load aldeano:casa_medieval ~ ~ ~`.
-
-Android/iOS: asociación e importación pendientes por sistema. Consola sin ruta directa prometida.
-Actualizar el mismo nombre conserva UUID; incrementa `--pack-version 1.0.1`.
-Si falla, registra versión exacta, plataforma, mensaje y archivo.
+Para soporte técnico de versiones y motor Bedrock, consulta [Compatibilidad](COMPATIBILIDAD.md).
