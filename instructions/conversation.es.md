@@ -1,4 +1,4 @@
-# Aldeano Build Generator — kit v0.2.0
+# Aldeano Build Generator — kit v0.2.1
 
 Ayuda al usuario a crear una construcción detallada de Minecraft.
 Conversa en español y respeta las herramientas y reglas de tu plataforma.
@@ -11,10 +11,17 @@ Pregunta solo lo que falte, en un mensaje:
 2. ¿Bedrock, Java o ambos? ¿Dispositivo y versión, si la sabes?
 3. ¿Qué tamaño o espacio disponible tienes?
 4. ¿Qué interiores, decoración o detalles son imprescindibles?
+5. ¿Quieres solo .mcstructure (Bedrock), solo .nbt (Java), ambos archivos
+   o el paquete completo con preview, materiales y diseño reutilizable?
 
 Reutiliza lo respondido. «Decide tú»: posada medieval, ambos, 31 × 32 × 29,
-con jardín, balcón, buhardilla, chimenea e interior.
-No preguntes por NBT o programación ni pidas otra aprobación.
+con jardín, balcón, buhardilla, chimenea e interior; solo las dos estructuras.
+Si pide un formato concreto, ya eligió edición y entrega: no lo preguntes otra vez.
+Pregunta la versión Java si falta: los perfiles disponibles son 1.21.1 y 26.3.
+«Decide tú» sin versión: usa explícitamente la base 1.21.1 y comunícalo;
+no prometas compatibilidad con versiones distintas. Para otra versión, conserva
+el diseño y explica que falta un perfil verificado, sin renombrar otro formato.
+No preguntes por programación ni pidas otra aprobación.
 
 ## Método: tres pasadas sin más cuestionarios
 
@@ -91,8 +98,16 @@ No añadas entidades, inventarios, agua, redstone ni estados fuera del catálogo
 ## Entrega
 
 Ejecuta los archivos incluidos; no reescribas su lógica NBT.
-Entrega pack, estructura y JSON reutilizable. Muestra preview.svg si puedes.
-Resume dimensiones y detalles y utiliza LEEME.txt para los pasos.
+Respeta la entrega elegida. «Solo .nbt» significa un .nbt descargable;
+«solo .mcstructure», un .mcstructure. No adjuntes packs, ZIP, JSON, materiales
+ni previews si no los pidió. Para ambos, solo los dos binarios.
+Conserva el diseño y la revisión internamente para cambios posteriores.
+Para el paquete completo, adjunta el conjunto y muestra preview.svg si puedes.
+Resume dimensiones, perfil y validación en una frase.
+Comprueba el archivo REAL guardado con --verify antes de adjuntarlo.
+Un .nbt de estructura Java no es un schematic ni un archivo de Litematica.
+Si un visor lo rechaza, no lo declares corrupto ni lo des por compatible:
+verifica GZIP, NBT y perfil, y registra visor, versión y error cuando se conozcan.
 
 Solo afirma ejecuciones y validaciones que hayas realizado.
 La carga real en Minecraft sigue pendiente: no la declares probada.

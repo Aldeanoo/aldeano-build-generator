@@ -28,4 +28,18 @@ Actualizar el estado solo tras esa prueba.
 
 Las 45 entradas detalladas se contrastan con `python tools/update_detail_catalog.py`.
 Se comprueban los tipos Byte/Int/String de Bedrock y Properties/properties de Java.
-Las formas de la preview son esquem?ticas; la navegaci?n se debe probar en el juego.
+Las formas de la preview son esquemáticas; la navegación se debe probar en el juego.
+
+## Integridad y entregas de v0.2.1
+
+La CLI exige un perfil Java explícito. La API Python y los ejemplos usan como base
+1.21.1, que conserva Name/Properties. El perfil 26.3 conserva id/properties y no
+se ofrece como si todos los visores lo aceptasen. No se cambian extensiones ni
+DataVersion de un archivo existente para convertirlo.
+
+Se verificaron 20 binarios con dos lectores independientes: ejemplos nuevos
+con ambos perfiles Java y Bedrock, más los ocho binarios publicados en v0.2.0.
+Todos se consumieron completos y se reescribieron con bytes idénticos.
+No se ha identificado el visor web que informó de corrupción; ese fallo concreto
+no se ha reproducido. Los controles técnicos y sus límites constan en
+[resultados](test-results.md).

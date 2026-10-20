@@ -1,6 +1,6 @@
-Aldeano Build Generator 0.2.0 - posada_del_roble
+Aldeano Build Generator 0.2.1 - posada_del_roble
 Validacion estructural correcta. No se ha probado esta construccion dentro del juego.
-Edicion solicitada: both. Java: java-26.3. Bedrock: motor minimo 1.26.30.
+Edicion solicitada: both. Java: java-1.21.1. Bedrock: motor minimo 1.26.30.
 
 BEDROCK WINDOWS: /give @s structure_block
 Bloque de estructura > Cargar > Importar > seleccionar posada_del_roble.mcstructure > Cargar.
@@ -13,6 +13,9 @@ JAVA: copiar posada_del_roble.datapack.zip a datapacks/ dentro de la carpeta del
 No extraerlo ni copiar el ZIP general. Cargar el mundo o ejecutar /reload.
 Con permisos de comandos: /place template aldeano:posada_del_roble ~ ~ ~
 El datapack debe corresponder a la version Java elegida al generar.
+NBT SUELTO: copiar posada_del_roble.nbt a generated/aldeano/structures/ dentro del mundo.
+En un bloque de estructura Java, modo Cargar, usar aldeano:posada_del_roble.
+No es un schematic de WorldEdit ni un archivo de Litematica.
 
 Las posiciones omitidas conservan el mundo; el aire explicito vacia posiciones.
 Para pruebas, usa un mundo creativo de ensayo con espacio libre y permisos.

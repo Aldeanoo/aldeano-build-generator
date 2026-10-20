@@ -1,9 +1,10 @@
 {
-  "generator_version": "0.2.0",
+  "generator_version": "0.2.1",
   "schema": "aldeano-build/v1",
   "name": "casa_medieval",
   "edition": "both",
-  "java_profile": "java-26.3",
+  "delivery": "full",
+  "java_profile": "java-1.21.1",
   "bedrock_profile": "bedrock-1.26.30",
   "pack_version": [
     1,
@@ -29,14 +30,17 @@
       "java_gzip_nbt_big_endian",
       "java_geometry_and_palette",
       "datapack_contents",
-      "paired_door_halves"
+      "typed_structure_schema",
+      "paired_door_halves",
+      "java_gzip_crc32",
+      "java_profile_match"
     ],
     "minecraft_tested": false
   },
   "sha256": {
     "casa_medieval.mcstructure": "fd31af5ecb62c65366627dcd32bba8dc02b52a0023f6efaf0a6d4cc705d10593",
     "casa_medieval.mcpack": "fe086f7ef59d5adfec1b4ad37acc5642a75edeb2b8f33daf2db567729f1bf32c",
-    "casa_medieval.nbt": "089128c7fd2062b9555907be359533322f3ab4011e155994e2fa08001a88fc7e",
-    "casa_medieval.datapack.zip": "04b7ee28d46a831ff0095cc09d67a11a4acbf69cd479aa89fac64869ec345fb0"
+    "casa_medieval.nbt": "cf386a81544ccbc9315308b8e5a34e8164e5b72b027ee2be5b85369dcf58a271",
+    "casa_medieval.datapack.zip": "99559cd5d8b864c31bc307a80e92c80cfa0b93672c9cb0fd4208c8cbc4fdbff2"
   }
 }

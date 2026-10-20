@@ -1,9 +1,10 @@
 {
-  "generator_version": "0.2.0",
+  "generator_version": "0.2.1",
   "schema": "aldeano-build/v1",
   "name": "puente_rustico",
   "edition": "both",
-  "java_profile": "java-26.3",
+  "delivery": "full",
+  "java_profile": "java-1.21.1",
   "bedrock_profile": "bedrock-1.26.30",
   "pack_version": [
     1,
@@ -29,14 +30,17 @@
       "java_gzip_nbt_big_endian",
       "java_geometry_and_palette",
       "datapack_contents",
-      "paired_door_halves"
+      "typed_structure_schema",
+      "paired_door_halves",
+      "java_gzip_crc32",
+      "java_profile_match"
     ],
     "minecraft_tested": false
   },
   "sha256": {
     "puente_rustico.mcstructure": "0528ea9b531f3a7257b2b28771f47871f09987512da8df42dab27f2b9ea19198",
     "puente_rustico.mcpack": "4dd7d400411da48a0cd8707770388aee065d30f145977277fcaec40514e6fc22",
-    "puente_rustico.nbt": "698594a06c60a89852e411def6284835efcfdab22b5e0058e767d4c1f72f1a5b",
-    "puente_rustico.datapack.zip": "e3cf09deb18d714aadd8ae196df7c12fe6740868751649ac0dba45207868e365"
+    "puente_rustico.nbt": "dd4da9aadcfba4638e6941cc3138b4fb784c9941c06f96b573ca4ea5524f85d5",
+    "puente_rustico.datapack.zip": "795778c6c632583604626a6bf5a37672d1f7b1732c718b7b1cbf9f96d216b2fc"
   }
 }

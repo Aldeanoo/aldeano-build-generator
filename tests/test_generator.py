@@ -281,23 +281,35 @@ class PortableKitTests(unittest.TestCase):
             (work / "generator.py").write_text(code, encoding="utf-8")
             (work / "architect.py").write_text(architect_code, encoding="utf-8")
             (work / "design.json").write_text(json.dumps(fixture()), encoding="utf-8")
-            run = subprocess.run([sys.executable, "-S", "generator.py", "design.json"],
+            run = subprocess.run([sys.executable, "-S", "generator.py", "design.json",
+                                  "--java-profile", "java-1.21.1"],
                                  cwd=work, capture_output=True, text=True)
             self.assertEqual(run.returncode, 0, run.stderr)
             self.assertTrue((work / "output/axis_fixture.mcpack").exists())
             request = {"schema":"aldeano-architecture/v1","name":"posada","template":"medieval_inn",
                        "theme":"medieval","seed":7,"features":["balcony","dormer"]}
             (work / "request.json").write_text(json.dumps(request),encoding="utf-8")
-            run = subprocess.run([sys.executable,"-S","generator.py","request.json","--output","inn"],
+            run = subprocess.run([sys.executable,"-S","generator.py","request.json","--output","inn",
+                                  "--java-profile","java-1.21.1"],
                                  cwd=work,capture_output=True,text=True)
             self.assertEqual(run.returncode,0,run.stderr)
             self.assertTrue((work / "inn/posada.request.json").exists())
+            run = subprocess.run([sys.executable, "-S", "generator.py", "request.json",
+                                  "--delivery", "nbt", "--java-profile", "java-26.3", "--output", "minimal"],
+                                 cwd=work, capture_output=True, text=True)
+            self.assertEqual(run.returncode, 0, run.stderr)
+            self.assertEqual({p.name for p in (work / "minimal").iterdir()}, {"posada.nbt"})
+            run = subprocess.run([sys.executable, "-S", "generator.py", "--verify", "minimal/posada.nbt",
+                                  "--java-profile", "java-26.3"], cwd=work, capture_output=True, text=True)
+            self.assertEqual(run.returncode, 0, run.stderr)
+            self.assertTrue(json.loads(run.stdout)["verification"]["passed"])
 
     def test_cli_errors_and_no_silent_overwrite(self):
         with tempfile.TemporaryDirectory() as folder:
             out = str(Path(folder) / "output")
             command = [sys.executable, "-S", str(ROOT / "generator.py"),
-                       str(ROOT / "tests/fixtures/axis.build.json"), "--output", out]
+                       str(ROOT / "tests/fixtures/axis.build.json"), "--output", out,
+                       "--java-profile", "java-1.21.1"]
             first = subprocess.run(command, capture_output=True, text=True)
             self.assertEqual(first.returncode, 0, first.stderr)
             second = subprocess.run(command, capture_output=True, text=True)

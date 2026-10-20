@@ -6,14 +6,20 @@ import gzip
 import hashlib
 import io
 import json
+import os
 from pathlib import Path
 import re
 import struct
 import sys
+import tempfile
 import uuid
 import zipfile
+import zlib
 
-VERSION = "0.2.0"
+VERSION = "0.2.1"
+DEFAULT_JAVA_PROFILE = "java-1.21.1"
+DELIVERIES = ("full", "mcstructure", "nbt", "structures")
+MAX_NBT_BYTES = 8 * 1024 * 1024
 SCHEMA = "aldeano-build/v1"
 MAX_BYTES = 262144
 MAX_OPS = 512
@@ -291,7 +297,7 @@ def write_nbt(root, little=False):
     return b"\x0a\x00\x00" + payload(10, root)
 
 
-def read_nbt(blob, little=False):
+def read_nbt(blob, little=False, tag_types=None):
     """Bounded structural check for the subset we emit, not a general importer."""
     stream = io.BytesIO(blob)
     endian = "<" if little else ">"
@@ -310,9 +316,11 @@ def read_nbt(blob, little=False):
     def string():
         return take(number("H")).decode("ascii")
 
-    def payload(kind, depth=0):
+    def payload(kind, depth=0, path=()):
         if depth > 32:
             _fail("NBT demasiado anidado.")
+        if tag_types is not None and kind != 9:
+            tag_types.setdefault(path, set()).add((kind, None))
         if kind == 1:
             return number("b")
         if kind == 3:
@@ -322,9 +330,13 @@ def read_nbt(blob, little=False):
         if kind == 9:
             child = number("B")
             count = number("i")
+            if tag_types is not None:
+                tag_types.setdefault(path, set()).add((9, child))
             if not 0 <= count <= 48 ** 3:
                 _fail("Lista NBT fuera de limite.")
-            return [payload(child, depth + 1) for _ in range(count)]
+            if child not in (1, 3, 8, 9, 10):
+                _fail("Tipo de lista NBT inesperado.")
+            return [payload(child, depth + 1, path + ("*",)) for _ in range(count)]
         if kind == 10:
             result = {}
             while True:
@@ -334,7 +346,7 @@ def read_nbt(blob, little=False):
                 key = string()
                 if key in result:
                     _fail("Clave NBT repetida.")
-                result[key] = payload(child, depth + 1)
+                result[key] = payload(child, depth + 1, path + (key,))
         _fail(f"Tipo NBT inesperado: {kind}")
 
     if take(3) != b"\x0a\x00\x00":
@@ -343,6 +355,133 @@ def read_nbt(blob, little=False):
     if stream.read(1):
         _fail("Bytes sobrantes al final del NBT.")
     return result
+
+
+def read_structure(blob, file_type, java_profile=None):
+    """Strict validator for our own exports, including tag types and GZIP CRC."""
+    if not blob or len(blob) > MAX_NBT_BYTES:
+        _fail("Estructura vacia o demasiado grande.")
+    if file_type not in ("nbt", "mcstructure"):
+        _fail("Solo se verifican .nbt y .mcstructure del generador.")
+    types = {}
+    if file_type == "nbt":
+        if not blob.startswith(b"\x1f\x8b"):
+            _fail("Java requiere un NBT binario GZIP; no texto, ZIP ni Bedrock.")
+        try:
+            decoder = zlib.decompressobj(16 + zlib.MAX_WBITS)
+            raw = decoder.decompress(blob, MAX_NBT_BYTES + 1)
+            if (len(raw) > MAX_NBT_BYTES or not decoder.eof
+                    or decoder.unused_data or decoder.unconsumed_tail):
+                _fail("GZIP truncado, con bytes sobrantes o fuera de limite.")
+        except zlib.error as error:
+            _fail(f"GZIP corrupto (cabecera, datos o CRC): {error}")
+    else:
+        raw = blob
+    try:
+        root = read_nbt(raw, little=file_type == "mcstructure", tag_types=types)
+    except UnicodeError:
+        _fail("Identificador NBT no valido para este generador.")
+
+    def tag(path, kind, child=None):
+        if types.get(tuple(path.split("/")) if path else ()) != {(kind, child)}:
+            _fail(f"Tipo NBT incorrecto en {path or 'raiz'}.")
+
+    def vector(value):
+        return (type(value) is list and len(value) == 3
+                and all(type(n) is int for n in value))
+
+    tag("", 10)
+    tag("size", 9, 3)
+    size = root.get("size")
+    if not vector(size) or any(not 1 <= n <= 48 for n in size):
+        _fail("Dimensiones de estructura no validas.")
+    if file_type == "nbt":
+        _keys(root, ("DataVersion", "size", "palette", "blocks", "entities"), "NBT Java")
+        tag("DataVersion", 3)
+        detected = next((p for p, c in JAVA_PROFILES.items()
+                         if c["data_version"] == root["DataVersion"]), None)
+        if detected is None or (java_profile is not None and java_profile != detected):
+            _fail("El DataVersion del NBT no corresponde al perfil Java solicitado.")
+        modern = JAVA_PROFILES[detected]["modern"]
+        tag("palette", 9, 10)
+        tag("blocks", 9, 10)
+        tag("entities", 9, 10)
+        palette = root["palette"]
+        if not 1 <= len(palette) <= 64:
+            _fail("Paleta Java fuera de limite.")
+        allowed = [java_state(m, modern) for m in MATERIALS]
+        key, props = ("id", "properties") if modern else ("Name", "Properties")
+        tag("palette/*/" + key, 8)
+        for entry in palette:
+            if entry not in allowed:
+                _fail("Identificador, propiedades o formato de paleta Java incorrectos.")
+        if any(props in entry for entry in palette):
+            tag("palette/*/" + props, 10)
+            for entry in palette:
+                for prop in entry.get(props, {}):
+                    tag("palette/*/" + props + "/" + prop, 8)
+        if not root["blocks"] or root["entities"]:
+            _fail("Se requieren bloques y entities vacio.")
+        tag("blocks/*/pos", 9, 3)
+        tag("blocks/*/state", 3)
+        seen = set()
+        for block in root["blocks"]:
+            _keys(block, ("pos", "state"), "Bloque Java")
+            pos, state = block["pos"], block["state"]
+            if (not vector(pos) or any(not 0 <= n < size[i] for i, n in enumerate(pos))
+                    or type(state) is not int or not 0 <= state < len(palette)
+                    or tuple(pos) in seen):
+                _fail("Coordenada o indice de paleta Java no valido o repetido.")
+            seen.add(tuple(pos))
+    else:
+        _keys(root, ("format_version", "size", "structure_world_origin", "structure"), "NBT Bedrock")
+        tag("format_version", 3)
+        tag("structure_world_origin", 9, 3)
+        if root["format_version"] != 1 or root["structure_world_origin"] != [0, 0, 0]:
+            _fail("Version u origen Bedrock no validos.")
+        structure = root["structure"]
+        _keys(structure, ("block_indices", "entities", "palette"), "Estructura Bedrock")
+        tag("structure", 10)
+        tag("structure/block_indices", 9, 9)
+        tag("structure/block_indices/*", 9, 3)
+        tag("structure/entities", 9, 10)
+        tag("structure/palette", 10)
+        _keys(structure["palette"], ("default",), "Paleta Bedrock")
+        default = structure["palette"]["default"]
+        _keys(default, ("block_palette", "block_position_data"), "Paleta por defecto")
+        prefix = "structure/palette/default/"
+        tag(prefix.rstrip("/"), 10)
+        tag(prefix + "block_palette", 9, 10)
+        tag(prefix + "block_position_data", 10)
+        palette = default["block_palette"]
+        if not 1 <= len(palette) <= 64 or default["block_position_data"] or structure["entities"]:
+            _fail("Paleta, datos de bloque o entidades Bedrock inesperados.")
+        tag(prefix + "block_palette/*/name", 8)
+        tag(prefix + "block_palette/*/version", 3)
+        tag(prefix + "block_palette/*/states", 10)
+        for entry in palette:
+            matches = [s for n, s, _ in MATERIALS.values()
+                       if entry == {"name": "minecraft:" + n, "states": s, "version": BEDROCK_VERSION}]
+            if not matches:
+                _fail("Identificador o estados Bedrock no validos.")
+            source = matches[0]
+            for key in entry["states"]:
+                kind = 1 if type(source[key]) is bool else 3 if type(source[key]) is int else 8
+                tag(prefix + "block_palette/*/states/" + key, kind)
+        layers = structure["block_indices"]
+        count = size[0] * size[1] * size[2]
+        if (len(layers) != 2 or any(len(row) != count for row in layers)
+                or any(not -1 <= index < len(palette) for index in layers[0])
+                or any(index != -1 for index in layers[1])):
+            _fail("Capas o indices Bedrock incorrectos.")
+    return root
+
+
+def verify_structure(blob, file_type, java_profile=None):
+    root = read_structure(blob, file_type, java_profile)
+    return {"passed": True, "format": file_type, "bytes": len(blob), "size": root["size"],
+            "data_version": root.get("DataVersion"),
+            "sha256": hashlib.sha256(blob).hexdigest(), "minecraft_tested": False}
 
 
 def export_mcstructure(volume):
@@ -367,7 +506,7 @@ def export_mcstructure(volume):
     }, little=True)
 
 
-def export_java_structure(volume, profile="java-26.3"):
+def export_java_structure(volume, profile=DEFAULT_JAVA_PROFILE):
     config = JAVA_PROFILES[profile]
     palette = []
     for material in volume["palette"]:
@@ -418,7 +557,7 @@ def package_bedrock(structure, name, pack_version=(1, 0, 0)):
                  f"structures/aldeano/{name}.mcstructure": structure})
 
 
-def package_java(structure, name, profile="java-26.3"):
+def package_java(structure, name, profile=DEFAULT_JAVA_PROFILE):
     config = JAVA_PROFILES[profile]
     pack = {"description": "Aldeano: " + name}
     if config["modern"]:
@@ -433,7 +572,7 @@ def validate_outputs(outputs, volume, name, edition, java_profile):
     checks = []
     if edition in ("bedrock", "both"):
         blob = outputs[name + ".mcstructure"]
-        root = read_nbt(blob, little=True)
+        root = read_structure(blob, "mcstructure")
         structure = root["structure"]
         expected_palette = [{"name": "minecraft:" + MATERIALS[m][0],
                              "states": MATERIALS[m][1], "version": BEDROCK_VERSION}
@@ -455,7 +594,7 @@ def validate_outputs(outputs, volume, name, edition, java_profile):
         checks += ["bedrock_nbt_little_endian", "bedrock_geometry_and_palette", "mcpack_contents"]
     if edition in ("java", "both"):
         blob = outputs[name + ".nbt"]
-        root = read_nbt(gzip.decompress(blob))
+        root = read_structure(blob, "nbt", java_profile)
         config = JAVA_PROFILES[java_profile]
         expected_palette = [java_state(m, config["modern"]) for m in volume["palette"]]
         expected_blocks = [{"pos": pos, "state": state} for pos, state in positions(volume)]
@@ -669,8 +808,14 @@ def validate_components(volume):
     return pairs
 
 
-def generate(build, edition="both", java_profile="java-26.3", max_size=32,
-             pack_version=(1, 0, 0)):
+def generate(build, edition=None, java_profile=DEFAULT_JAVA_PROFILE, max_size=32,
+             pack_version=(1, 0, 0), delivery="full"):
+    if delivery not in DELIVERIES:
+        _fail("Entrega desconocida.")
+    required = {"mcstructure": "bedrock", "nbt": "java", "structures": "both"}.get(delivery)
+    edition = edition or required or "both"
+    if required and edition != required:
+        _fail(f"La entrega {delivery} requiere --edition {required}.")
     request = None
     if type(build) is dict and build.get("schema") == "aldeano-architecture/v1":
         request = build
@@ -697,11 +842,14 @@ def generate(build, edition="both", java_profile="java-26.3", max_size=32,
         outputs[name + ".nbt"] = structure
         outputs[name + ".datapack.zip"] = package_java(structure, name, java_profile)
     checks = validate_outputs(outputs, volume, name, edition, java_profile)
-    checks.append("paired_door_halves")
+    checks += ["typed_structure_schema", "paired_door_halves"]
+    if edition != "bedrock":
+        checks += ["java_gzip_crc32", "java_profile_match"]
     counts = Counter(volume["palette"][i] for i in volume["cells"] if i >= 0)
     report = {
         "generator_version": VERSION, "schema": SCHEMA, "name": name,
-        "edition": edition, "java_profile": java_profile if edition != "bedrock" else None,
+        "edition": edition, "delivery": delivery,
+        "java_profile": java_profile if edition != "bedrock" else None,
         "bedrock_profile": "bedrock-1.26.30" if edition != "java" else None,
         "pack_version": list(pack_version), "size": volume["size"],
         "door_pairs": door_pairs,
@@ -711,6 +859,13 @@ def generate(build, edition="both", java_profile="java-26.3", max_size=32,
                        "minecraft_tested": False},
         "sha256": {key: hashlib.sha256(value).hexdigest() for key, value in outputs.items()},
     }
+    if delivery != "full":
+        extensions = {"mcstructure": (".mcstructure",), "nbt": (".nbt",),
+                      "structures": (".mcstructure", ".nbt")}[delivery]
+        outputs = {key: value for key, value in outputs.items() if key.endswith(extensions)}
+        report["sha256"] = {key: hashlib.sha256(value).hexdigest() for key, value in outputs.items()}
+        report["review"] = analyze_quality(volume)
+        return outputs, report
     outputs[name + ".build.json"] = _json(build)
     if request is not None:
         outputs[name + ".request.json"] = _json(request)
@@ -735,6 +890,9 @@ JAVA: copiar {name}.datapack.zip a datapacks/ dentro de la carpeta del mundo.
 No extraerlo ni copiar el ZIP general. Cargar el mundo o ejecutar /reload.
 Con permisos de comandos: /place template aldeano:{name} ~ ~ ~
 El datapack debe corresponder a la version Java elegida al generar.
+NBT SUELTO: copiar {name}.nbt a generated/aldeano/structures/ dentro del mundo.
+En un bloque de estructura Java, modo Cargar, usar aldeano:{name}.
+No es un schematic de WorldEdit ni un archivo de Litematica.
 
 Las posiciones omitidas conservan el mundo; el aire explicito vacia posiciones.
 Para pruebas, usa un mundo creativo de ensayo con espacio libre y permisos.
@@ -747,11 +905,50 @@ preview_planos.svg contiene las tres proyecciones. revision.json incluye comprob
     return outputs, report
 
 
+def write_outputs(outputs, destination, overwrite=False):
+    """Stage, read back, verify, then atomically replace each individual file."""
+    destination = Path(destination)
+    conflicts = [name for name in outputs if (destination / name).exists()]
+    if conflicts and not overwrite:
+        _fail("Ya existen archivos de salida. Usa otra carpeta o --overwrite: " + ", ".join(conflicts))
+    destination.mkdir(parents=True, exist_ok=True)
+    staged = []
+    try:
+        for name, contents in outputs.items():
+            if Path(name).name != name:
+                _fail("Nombre de archivo de salida no valido.")
+            with tempfile.NamedTemporaryFile(dir=destination, suffix=".tmp", delete=False) as stream:
+                temporary = Path(stream.name)
+                staged.append((temporary, destination / name, contents))
+                stream.write(contents)
+                stream.flush()
+                os.fsync(stream.fileno())
+            saved = temporary.read_bytes()
+            if saved != contents:
+                _fail(f"Escritura incompleta de {name}; no se entrega.")
+            if name.endswith((".nbt", ".mcstructure")):
+                verify_structure(saved, name.rsplit(".", 1)[1])
+            elif name.endswith((".zip", ".mcpack")):
+                with zipfile.ZipFile(io.BytesIO(saved)) as archive:
+                    if archive.testzip() is not None:
+                        _fail(f"CRC incorrecto en {name}.")
+        for temporary, target, contents in staged:
+            os.replace(temporary, target)
+            if target.read_bytes() != contents:
+                _fail(f"La lectura final de {target.name} no coincide; no se entrega.")
+    finally:
+        for temporary, _, _ in staged:
+            temporary.unlink(missing_ok=True)
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Construcciones Bedrock y Java desde BuildSpec.")
     parser.add_argument("input", nargs="?", help="JSON del diseno; no es un archivo NBT.")
-    parser.add_argument("--edition", choices=("both", "bedrock", "java"), default="both")
-    parser.add_argument("--java-profile", choices=tuple(JAVA_PROFILES), default="java-26.3")
+    parser.add_argument("--edition", choices=("both", "bedrock", "java"))
+    parser.add_argument("--java-profile", choices=tuple(JAVA_PROFILES))
+    parser.add_argument("--delivery", choices=DELIVERIES, default="full",
+                        help="Solo el formato solicitado o paquete completo.")
+    parser.add_argument("--verify", metavar="ARCHIVO", help="Verificar una estructura ya guardada.")
     parser.add_argument("--output", default="output")
     parser.add_argument("--max-size", type=int, choices=(32, 48), default=32)
     parser.add_argument("--pack-version", default="1.0.0")
@@ -760,12 +957,24 @@ def main(argv=None):
     parser.add_argument("--version", action="version", version=VERSION)
     args = parser.parse_args(argv)
     try:
+        if args.verify:
+            if args.input:
+                _fail("Usa --verify sin JSON de entrada.")
+            path = Path(args.verify)
+            if path.stat().st_size > MAX_NBT_BYTES:
+                _fail("La estructura supera el limite de verificacion.")
+            result = verify_structure(path.read_bytes(), path.suffix.lstrip("."), args.java_profile)
+            print(json.dumps({"ok": True, "file": str(path), "verification": result}, indent=2))
+            return 0
         if args.catalog:
             print(json.dumps({"materials": list(MATERIALS), "java_profiles": JAVA_PROFILES,
                               "bedrock_engine": BEDROCK_ENGINE}, indent=2))
             return 0
         if not args.input:
             parser.error("Indica un JSON de entrada o utiliza --catalog.")
+        edition = args.edition or {"mcstructure": "bedrock", "nbt": "java", "structures": "both"}.get(args.delivery, "both")
+        if edition != "bedrock" and args.java_profile is None:
+            _fail("Indica --java-profile java-1.21.1 o java-26.3 segun tu version; no se presupone la mas reciente.")
         source = Path(args.input)
         if source.stat().st_size > MAX_BYTES:
             _fail("El archivo de entrada supera 256 KiB.")
@@ -773,20 +982,17 @@ def main(argv=None):
         if not re.fullmatch(r"\d{1,5}\.\d{1,5}\.\d{1,5}", args.pack_version):
             _fail("--pack-version debe tener forma 1.0.0.")
         pack_version = tuple(map(int, args.pack_version.split(".")))
-        outputs, report = generate(build, args.edition, args.java_profile,
-                                   args.max_size, pack_version)
+        outputs, report = generate(build, edition, args.java_profile or DEFAULT_JAVA_PROFILE,
+                                   args.max_size, pack_version, args.delivery)
         destination = Path(args.output)
-        conflicts = [name for name in outputs if (destination / name).exists()]
-        if conflicts and not args.overwrite:
-            _fail("Ya existen archivos de salida. Usa otra carpeta o --overwrite: "
-                  + ", ".join(conflicts))
-        destination.mkdir(parents=True, exist_ok=True)
-        for name, contents in outputs.items():
-            (destination / name).write_bytes(contents)
+        write_outputs(outputs, destination, args.overwrite)
         print(json.dumps({"ok": True, "files": [str(destination / n) for n in outputs],
-                          "validation": report["validation"]}, ensure_ascii=False, indent=2))
+                          "java_profile": report["java_profile"], "delivery": args.delivery,
+                          "sha256": report["sha256"],
+                          "validation": dict(report["validation"], disk_readback=True),
+                          "review": report.get("review")}, ensure_ascii=False, indent=2))
         return 0
-    except (BuildError, OSError, UnicodeError, OverflowError) as error:
+    except (BuildError, OSError, UnicodeError, OverflowError, zipfile.BadZipFile) as error:
         print(json.dumps({"ok": False, "error": str(error)}, ensure_ascii=False), file=sys.stderr)
         return 2
 

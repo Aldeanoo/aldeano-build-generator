@@ -1,7 +1,7 @@
 # Aldeano Build Generator — Plan de repositorio para usar con IA
 
 Fecha de investigación y revisión: 20 de octubre de 2026.
-Estado: plan de referencia. Ya existe un prototipo v0.2.0 del generador, las instrucciones y las pruebas automatizadas. El alcance real y los resultados están en README.md y docs/test-results.md. Siguen pendientes las pruebas en cuentas gratuitas y dentro de Minecraft.
+Estado: plan de referencia. Ya existe un prototipo v0.2.1 del generador, las instrucciones y las pruebas automatizadas. El alcance real y los resultados están en README.md y docs/test-results.md. Siguen pendientes las pruebas en cuentas gratuitas y dentro de Minecraft.
 
 ## 1. Objetivo y decisión recomendada
 
@@ -156,7 +156,7 @@ La IA escribe el JSON del diseño, ejecuta el compilador, lee el informe y corri
 CLI prevista:
 
 ~~~text
-python generator.py design.build.json --edition both --output output
+python generator.py design.build.json --edition both --java-profile java-1.21.1 --output output
 ~~~
 
 Usar los nombres reales y rutas del entorno. No inventar que el suscriptor tiene una carpeta local accesible desde el chat.
@@ -782,3 +782,13 @@ El prototipo incorpora componentes arquitect?nicos, solicitud compacta de posada
 est? en README.md y el enfoque en docs/generation-design.md. Las exclusiones y
 fases del plan original sirven como referencia hist?rica; los estados detallados
 ya incorporados est?n enumerados en catalog/details.json.
+
+## Actualización v0.2.1
+
+La conversación pregunta qué archivos entregar: solo .mcstructure, solo .nbt,
+ambos o paquete completo. La revisión y el diseño se conservan internamente.
+La CLI añade --delivery y --verify y exige perfil explícito para Java.
+Los archivos se escriben en binario, se releen y se verifican antes de entregarlos.
+Hay 52 pruebas automatizadas y 20 binarios contrastados con dos lectores
+independientes. El fallo del visor web concreto no se ha reproducido; las pruebas
+dentro del juego siguen pendientes. Detalles en docs/test-results.md.

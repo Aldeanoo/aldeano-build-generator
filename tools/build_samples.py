@@ -17,7 +17,7 @@ def main():
         request=g.parse_build(source.read_text(encoding="utf-8"))
         outputs,report=g.generate(request)
         folder=ROOT/"samples"/report["name"];folder.mkdir(parents=True,exist_ok=True)
-        for name,body in outputs.items():(folder/name).write_bytes(body)
+        g.write_outputs(outputs,folder,overwrite=True)
         if args.png:
             from render_preview import render
             render(folder/"preview.svg",folder/"preview_3d.png")

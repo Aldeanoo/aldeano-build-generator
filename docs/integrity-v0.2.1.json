@@ -1,0 +1,122 @@
+{
+  "date": "2026-10-20",
+  "generator": "0.2.1",
+  "readers": [
+    {
+      "name": "nbtlib",
+      "version": "2.0.4",
+      "checked": 20
+    },
+    {
+      "name": "prismarine-nbt",
+      "version": "2.8.0",
+      "checked": 20
+    }
+  ],
+  "full_consumption": true,
+  "identical_binary_roundtrip": true,
+  "minecraft_tested": false,
+  "viewer_error_reproduced": false,
+  "files": [
+    {
+      "file": "casa_medieval.mcstructure",
+      "bytes": 49745,
+      "sha256": "fd31af5ecb62c65366627dcd32bba8dc02b52a0023f6efaf0a6d4cc705d10593"
+    },
+    {
+      "file": "casa_medieval-java-26.3.nbt",
+      "bytes": 9075,
+      "sha256": "089128c7fd2062b9555907be359533322f3ab4011e155994e2fa08001a88fc7e"
+    },
+    {
+      "file": "casa_medieval-java-1.21.1.nbt",
+      "bytes": 9074,
+      "sha256": "cf386a81544ccbc9315308b8e5a34e8164e5b72b027ee2be5b85369dcf58a271"
+    },
+    {
+      "file": "casa_medieval-baseline.nbt",
+      "bytes": 9075,
+      "sha256": "089128c7fd2062b9555907be359533322f3ab4011e155994e2fa08001a88fc7e"
+    },
+    {
+      "file": "casa_medieval-baseline.mcstructure",
+      "bytes": 49745,
+      "sha256": "fd31af5ecb62c65366627dcd32bba8dc02b52a0023f6efaf0a6d4cc705d10593"
+    },
+    {
+      "file": "posada_del_roble.mcstructure",
+      "bytes": 233487,
+      "sha256": "167fd0261ae7e84408609b0a584f8c297dd2a39a8d9122dac1aae2dc1d845c3e"
+    },
+    {
+      "file": "posada_del_roble-java-26.3.nbt",
+      "bytes": 27354,
+      "sha256": "3ad551c6532c470bdf98ebbd7aba019300f7bc9f6fa95b830c7ac4182845108c"
+    },
+    {
+      "file": "posada_del_roble-java-1.21.1.nbt",
+      "bytes": 27353,
+      "sha256": "773736053253d2830d676520d478b0374f72521cdab0a6477bc4d9021cfb07fa"
+    },
+    {
+      "file": "posada_del_roble-baseline.nbt",
+      "bytes": 27354,
+      "sha256": "3ad551c6532c470bdf98ebbd7aba019300f7bc9f6fa95b830c7ac4182845108c"
+    },
+    {
+      "file": "posada_del_roble-baseline.mcstructure",
+      "bytes": 233487,
+      "sha256": "167fd0261ae7e84408609b0a584f8c297dd2a39a8d9122dac1aae2dc1d845c3e"
+    },
+    {
+      "file": "puente_rustico.mcstructure",
+      "bytes": 18759,
+      "sha256": "0528ea9b531f3a7257b2b28771f47871f09987512da8df42dab27f2b9ea19198"
+    },
+    {
+      "file": "puente_rustico-java-26.3.nbt",
+      "bytes": 3114,
+      "sha256": "698594a06c60a89852e411def6284835efcfdab22b5e0058e767d4c1f72f1a5b"
+    },
+    {
+      "file": "puente_rustico-java-1.21.1.nbt",
+      "bytes": 3112,
+      "sha256": "dd4da9aadcfba4638e6941cc3138b4fb784c9941c06f96b573ca4ea5524f85d5"
+    },
+    {
+      "file": "puente_rustico-baseline.nbt",
+      "bytes": 3114,
+      "sha256": "698594a06c60a89852e411def6284835efcfdab22b5e0058e767d4c1f72f1a5b"
+    },
+    {
+      "file": "puente_rustico-baseline.mcstructure",
+      "bytes": 18759,
+      "sha256": "0528ea9b531f3a7257b2b28771f47871f09987512da8df42dab27f2b9ea19198"
+    },
+    {
+      "file": "torre_vigia.mcstructure",
+      "bytes": 33053,
+      "sha256": "424d2beb17f11dd7b983a6522b04dfdb91db4ad4d89723694b50727dd07f4a61"
+    },
+    {
+      "file": "torre_vigia-java-26.3.nbt",
+      "bytes": 4963,
+      "sha256": "41bf56cb4888d22daaa9af8a02d3b3ec14de12014f8cfa3f9a7afe6723af7b11"
+    },
+    {
+      "file": "torre_vigia-java-1.21.1.nbt",
+      "bytes": 4963,
+      "sha256": "a7a99370a348c7bc293c1671b5768d706ad2006e01fa65dbd336e25cb1bfc2c7"
+    },
+    {
+      "file": "torre_vigia-baseline.nbt",
+      "bytes": 4963,
+      "sha256": "41bf56cb4888d22daaa9af8a02d3b3ec14de12014f8cfa3f9a7afe6723af7b11"
+    },
+    {
+      "file": "torre_vigia-baseline.mcstructure",
+      "bytes": 33053,
+      "sha256": "424d2beb17f11dd7b983a6522b04dfdb91db4ad4d89723694b50727dd07f4a61"
+    }
+  ]
+}

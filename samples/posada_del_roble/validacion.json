@@ -1,9 +1,10 @@
 {
-  "generator_version": "0.2.0",
+  "generator_version": "0.2.1",
   "schema": "aldeano-build/v1",
   "name": "posada_del_roble",
   "edition": "both",
-  "java_profile": "java-26.3",
+  "delivery": "full",
+  "java_profile": "java-1.21.1",
   "bedrock_profile": "bedrock-1.26.30",
   "pack_version": [
     1,
@@ -29,14 +30,17 @@
       "java_gzip_nbt_big_endian",
       "java_geometry_and_palette",
       "datapack_contents",
-      "paired_door_halves"
+      "typed_structure_schema",
+      "paired_door_halves",
+      "java_gzip_crc32",
+      "java_profile_match"
     ],
     "minecraft_tested": false
   },
   "sha256": {
     "posada_del_roble.mcstructure": "167fd0261ae7e84408609b0a584f8c297dd2a39a8d9122dac1aae2dc1d845c3e",
     "posada_del_roble.mcpack": "4ee61425d5a126bfd821615d16a6d8db4ce3cd14f6f0efba81b1a72da9122666",
-    "posada_del_roble.nbt": "3ad551c6532c470bdf98ebbd7aba019300f7bc9f6fa95b830c7ac4182845108c",
-    "posada_del_roble.datapack.zip": "07f02b9a79ce7c771f26488609bc13944ed5c356fe21642ab25670845bb08212"
+    "posada_del_roble.nbt": "773736053253d2830d676520d478b0374f72521cdab0a6477bc4d9021cfb07fa",
+    "posada_del_roble.datapack.zip": "a442fba2ef650696d52b84ace3f63655efe51e0e8db5c4ae1619b7ea8519926c"
   }
 }
