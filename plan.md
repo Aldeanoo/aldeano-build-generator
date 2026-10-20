@@ -1,7 +1,7 @@
 # Aldeano Build Generator — Plan de repositorio para usar con IA
 
 Fecha de investigación y revisión: 20 de octubre de 2026.
-Estado: plan de referencia. Ya existe un prototipo v0.1.0 del generador, las instrucciones y las pruebas automatizadas. El alcance real y los resultados están en README.md y docs/test-results.md. Siguen pendientes las pruebas en cuentas gratuitas y dentro de Minecraft.
+Estado: plan de referencia. Ya existe un prototipo v0.2.0 del generador, las instrucciones y las pruebas automatizadas. El alcance real y los resultados están en README.md y docs/test-results.md. Siguen pendientes las pruebas en cuentas gratuitas y dentro de Minecraft.
 
 ## 1. Objetivo y decisión recomendada
 
@@ -774,3 +774,11 @@ Orden recomendado:
 7. Añadir mejoras según resultados.
 
 La experiencia deseada es **«presento el kit, respondo unas preguntas y recibo mi construcción»**. Para afirmarla en un proveedor concreto, hay que haber probado su ruta completa de descarga.
+
+## Actualizaci?n v0.2.0
+
+El prototipo incorpora componentes arquitect?nicos, solicitud compacta de posada,
+82 alias de materiales/estados y revisi?n con preview isom?trica. El estado actual
+est? en README.md y el enfoque en docs/generation-design.md. Las exclusiones y
+fases del plan original sirven como referencia hist?rica; los estados detallados
+ya incorporados est?n enumerados en catalog/details.json.

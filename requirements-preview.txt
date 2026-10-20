@@ -1,0 +1,2 @@
+# Optional, only to rasterize the repository's sample SVGs to PNG.
+Pillow==12.3.0

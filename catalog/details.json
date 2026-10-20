@@ -1,0 +1,609 @@
+{
+  "oak_log_x": {
+    "java": "oak_log",
+    "properties": {
+      "axis": "x"
+    },
+    "bedrock": "oak_log",
+    "states": {
+      "pillar_axis": "x"
+    },
+    "color": "#96734b",
+    "shape": "cube"
+  },
+  "oak_log_y": {
+    "java": "oak_log",
+    "properties": {
+      "axis": "y"
+    },
+    "bedrock": "oak_log",
+    "states": {
+      "pillar_axis": "y"
+    },
+    "color": "#96734b",
+    "shape": "cube"
+  },
+  "oak_log_z": {
+    "java": "oak_log",
+    "properties": {
+      "axis": "z"
+    },
+    "bedrock": "oak_log",
+    "states": {
+      "pillar_axis": "z"
+    },
+    "color": "#96734b",
+    "shape": "cube"
+  },
+  "dark_oak_log_x": {
+    "java": "dark_oak_log",
+    "properties": {
+      "axis": "x"
+    },
+    "bedrock": "dark_oak_log",
+    "states": {
+      "pillar_axis": "x"
+    },
+    "color": "#514031",
+    "shape": "cube"
+  },
+  "dark_oak_log_y": {
+    "java": "dark_oak_log",
+    "properties": {
+      "axis": "y"
+    },
+    "bedrock": "dark_oak_log",
+    "states": {
+      "pillar_axis": "y"
+    },
+    "color": "#514031",
+    "shape": "cube"
+  },
+  "dark_oak_log_z": {
+    "java": "dark_oak_log",
+    "properties": {
+      "axis": "z"
+    },
+    "bedrock": "dark_oak_log",
+    "states": {
+      "pillar_axis": "z"
+    },
+    "color": "#514031",
+    "shape": "cube"
+  },
+  "deepslate_tile_stairs_north": {
+    "java": "deepslate_tile_stairs",
+    "properties": {
+      "facing": "north",
+      "half": "bottom",
+      "shape": "straight",
+      "waterlogged": "false"
+    },
+    "bedrock": "deepslate_tile_stairs",
+    "states": {
+      "upside_down_bit": false,
+      "weirdo_direction": 3
+    },
+    "color": "#3d4c58",
+    "shape": "stairs"
+  },
+  "deepslate_tile_stairs_south": {
+    "java": "deepslate_tile_stairs",
+    "properties": {
+      "facing": "south",
+      "half": "bottom",
+      "shape": "straight",
+      "waterlogged": "false"
+    },
+    "bedrock": "deepslate_tile_stairs",
+    "states": {
+      "upside_down_bit": false,
+      "weirdo_direction": 2
+    },
+    "color": "#3d4c58",
+    "shape": "stairs"
+  },
+  "deepslate_tile_stairs_east": {
+    "java": "deepslate_tile_stairs",
+    "properties": {
+      "facing": "east",
+      "half": "bottom",
+      "shape": "straight",
+      "waterlogged": "false"
+    },
+    "bedrock": "deepslate_tile_stairs",
+    "states": {
+      "upside_down_bit": false,
+      "weirdo_direction": 0
+    },
+    "color": "#3d4c58",
+    "shape": "stairs"
+  },
+  "deepslate_tile_stairs_west": {
+    "java": "deepslate_tile_stairs",
+    "properties": {
+      "facing": "west",
+      "half": "bottom",
+      "shape": "straight",
+      "waterlogged": "false"
+    },
+    "bedrock": "deepslate_tile_stairs",
+    "states": {
+      "upside_down_bit": false,
+      "weirdo_direction": 1
+    },
+    "color": "#3d4c58",
+    "shape": "stairs"
+  },
+  "spruce_stairs_north": {
+    "java": "spruce_stairs",
+    "properties": {
+      "facing": "north",
+      "half": "bottom",
+      "shape": "straight",
+      "waterlogged": "false"
+    },
+    "bedrock": "spruce_stairs",
+    "states": {
+      "upside_down_bit": false,
+      "weirdo_direction": 3
+    },
+    "color": "#765637",
+    "shape": "stairs"
+  },
+  "spruce_stairs_south": {
+    "java": "spruce_stairs",
+    "properties": {
+      "facing": "south",
+      "half": "bottom",
+      "shape": "straight",
+      "waterlogged": "false"
+    },
+    "bedrock": "spruce_stairs",
+    "states": {
+      "upside_down_bit": false,
+      "weirdo_direction": 2
+    },
+    "color": "#765637",
+    "shape": "stairs"
+  },
+  "spruce_stairs_east": {
+    "java": "spruce_stairs",
+    "properties": {
+      "facing": "east",
+      "half": "bottom",
+      "shape": "straight",
+      "waterlogged": "false"
+    },
+    "bedrock": "spruce_stairs",
+    "states": {
+      "upside_down_bit": false,
+      "weirdo_direction": 0
+    },
+    "color": "#765637",
+    "shape": "stairs"
+  },
+  "spruce_stairs_west": {
+    "java": "spruce_stairs",
+    "properties": {
+      "facing": "west",
+      "half": "bottom",
+      "shape": "straight",
+      "waterlogged": "false"
+    },
+    "bedrock": "spruce_stairs",
+    "states": {
+      "upside_down_bit": false,
+      "weirdo_direction": 1
+    },
+    "color": "#765637",
+    "shape": "stairs"
+  },
+  "stone_brick_stairs_north": {
+    "java": "stone_brick_stairs",
+    "properties": {
+      "facing": "north",
+      "half": "bottom",
+      "shape": "straight",
+      "waterlogged": "false"
+    },
+    "bedrock": "stone_brick_stairs",
+    "states": {
+      "upside_down_bit": false,
+      "weirdo_direction": 3
+    },
+    "color": "#96918a",
+    "shape": "stairs"
+  },
+  "stone_brick_stairs_south": {
+    "java": "stone_brick_stairs",
+    "properties": {
+      "facing": "south",
+      "half": "bottom",
+      "shape": "straight",
+      "waterlogged": "false"
+    },
+    "bedrock": "stone_brick_stairs",
+    "states": {
+      "upside_down_bit": false,
+      "weirdo_direction": 2
+    },
+    "color": "#96918a",
+    "shape": "stairs"
+  },
+  "stone_brick_stairs_east": {
+    "java": "stone_brick_stairs",
+    "properties": {
+      "facing": "east",
+      "half": "bottom",
+      "shape": "straight",
+      "waterlogged": "false"
+    },
+    "bedrock": "stone_brick_stairs",
+    "states": {
+      "upside_down_bit": false,
+      "weirdo_direction": 0
+    },
+    "color": "#96918a",
+    "shape": "stairs"
+  },
+  "stone_brick_stairs_west": {
+    "java": "stone_brick_stairs",
+    "properties": {
+      "facing": "west",
+      "half": "bottom",
+      "shape": "straight",
+      "waterlogged": "false"
+    },
+    "bedrock": "stone_brick_stairs",
+    "states": {
+      "upside_down_bit": false,
+      "weirdo_direction": 1
+    },
+    "color": "#96918a",
+    "shape": "stairs"
+  },
+  "spruce_slab_bottom": {
+    "java": "spruce_slab",
+    "properties": {
+      "type": "bottom",
+      "waterlogged": "false"
+    },
+    "bedrock": "spruce_slab",
+    "states": {
+      "minecraft:vertical_half": "bottom"
+    },
+    "color": "#765637",
+    "shape": "slab"
+  },
+  "spruce_slab_top": {
+    "java": "spruce_slab",
+    "properties": {
+      "type": "top",
+      "waterlogged": "false"
+    },
+    "bedrock": "spruce_slab",
+    "states": {
+      "minecraft:vertical_half": "top"
+    },
+    "color": "#765637",
+    "shape": "slab"
+  },
+  "oak_slab_bottom": {
+    "java": "oak_slab",
+    "properties": {
+      "type": "bottom",
+      "waterlogged": "false"
+    },
+    "bedrock": "oak_slab",
+    "states": {
+      "minecraft:vertical_half": "bottom"
+    },
+    "color": "#b8945f",
+    "shape": "slab"
+  },
+  "oak_slab_top": {
+    "java": "oak_slab",
+    "properties": {
+      "type": "top",
+      "waterlogged": "false"
+    },
+    "bedrock": "oak_slab",
+    "states": {
+      "minecraft:vertical_half": "top"
+    },
+    "color": "#b8945f",
+    "shape": "slab"
+  },
+  "stone_brick_slab_bottom": {
+    "java": "stone_brick_slab",
+    "properties": {
+      "type": "bottom",
+      "waterlogged": "false"
+    },
+    "bedrock": "stone_brick_slab",
+    "states": {
+      "minecraft:vertical_half": "bottom"
+    },
+    "color": "#96918a",
+    "shape": "slab"
+  },
+  "stone_brick_slab_top": {
+    "java": "stone_brick_slab",
+    "properties": {
+      "type": "top",
+      "waterlogged": "false"
+    },
+    "bedrock": "stone_brick_slab",
+    "states": {
+      "minecraft:vertical_half": "top"
+    },
+    "color": "#96918a",
+    "shape": "slab"
+  },
+  "deepslate_tile_slab_bottom": {
+    "java": "deepslate_tile_slab",
+    "properties": {
+      "type": "bottom",
+      "waterlogged": "false"
+    },
+    "bedrock": "deepslate_tile_slab",
+    "states": {
+      "minecraft:vertical_half": "bottom"
+    },
+    "color": "#3d4c58",
+    "shape": "slab"
+  },
+  "deepslate_tile_slab_top": {
+    "java": "deepslate_tile_slab",
+    "properties": {
+      "type": "top",
+      "waterlogged": "false"
+    },
+    "bedrock": "deepslate_tile_slab",
+    "states": {
+      "minecraft:vertical_half": "top"
+    },
+    "color": "#3d4c58",
+    "shape": "slab"
+  },
+  "spruce_shutter_north": {
+    "java": "spruce_trapdoor",
+    "properties": {
+      "facing": "north",
+      "half": "bottom",
+      "open": "true",
+      "powered": "false",
+      "waterlogged": "false"
+    },
+    "bedrock": "spruce_trapdoor",
+    "states": {
+      "direction": 3,
+      "open_bit": true,
+      "upside_down_bit": false
+    },
+    "color": "#816240",
+    "shape": "shutter"
+  },
+  "spruce_shutter_south": {
+    "java": "spruce_trapdoor",
+    "properties": {
+      "facing": "south",
+      "half": "bottom",
+      "open": "true",
+      "powered": "false",
+      "waterlogged": "false"
+    },
+    "bedrock": "spruce_trapdoor",
+    "states": {
+      "direction": 2,
+      "open_bit": true,
+      "upside_down_bit": false
+    },
+    "color": "#816240",
+    "shape": "shutter"
+  },
+  "spruce_shutter_east": {
+    "java": "spruce_trapdoor",
+    "properties": {
+      "facing": "east",
+      "half": "bottom",
+      "open": "true",
+      "powered": "false",
+      "waterlogged": "false"
+    },
+    "bedrock": "spruce_trapdoor",
+    "states": {
+      "direction": 0,
+      "open_bit": true,
+      "upside_down_bit": false
+    },
+    "color": "#816240",
+    "shape": "shutter"
+  },
+  "spruce_shutter_west": {
+    "java": "spruce_trapdoor",
+    "properties": {
+      "facing": "west",
+      "half": "bottom",
+      "open": "true",
+      "powered": "false",
+      "waterlogged": "false"
+    },
+    "bedrock": "spruce_trapdoor",
+    "states": {
+      "direction": 1,
+      "open_bit": true,
+      "upside_down_bit": false
+    },
+    "color": "#816240",
+    "shape": "shutter"
+  },
+  "spruce_door_lower": {
+    "java": "spruce_door",
+    "properties": {
+      "facing": "north",
+      "half": "lower",
+      "hinge": "left",
+      "open": "false",
+      "powered": "false"
+    },
+    "bedrock": "spruce_door",
+    "states": {
+      "door_hinge_bit": false,
+      "minecraft:cardinal_direction": "east",
+      "open_bit": false,
+      "upper_block_bit": false
+    },
+    "color": "#785a39",
+    "shape": "door"
+  },
+  "spruce_door_upper": {
+    "java": "spruce_door",
+    "properties": {
+      "facing": "north",
+      "half": "upper",
+      "hinge": "left",
+      "open": "false",
+      "powered": "false"
+    },
+    "bedrock": "spruce_door",
+    "states": {
+      "door_hinge_bit": false,
+      "minecraft:cardinal_direction": "east",
+      "open_bit": false,
+      "upper_block_bit": true
+    },
+    "color": "#785a39",
+    "shape": "door"
+  },
+  "lantern_hanging": {
+    "java": "lantern",
+    "properties": {
+      "hanging": "true",
+      "waterlogged": "false"
+    },
+    "bedrock": "lantern",
+    "states": {
+      "hanging": true
+    },
+    "color": "#edb65a",
+    "shape": "lantern"
+  },
+  "lantern": {
+    "java": "lantern",
+    "properties": {
+      "hanging": "false",
+      "waterlogged": "false"
+    },
+    "bedrock": "lantern",
+    "states": {
+      "hanging": false
+    },
+    "color": "#edb65a",
+    "shape": "lantern"
+  },
+  "oak_leaves": {
+    "java": "oak_leaves",
+    "properties": {
+      "distance": "7",
+      "persistent": "true",
+      "waterlogged": "false"
+    },
+    "bedrock": "oak_leaves",
+    "states": {
+      "persistent_bit": true,
+      "update_bit": false
+    },
+    "color": "#6f8c48",
+    "shape": "cube"
+  },
+  "spruce_post": {
+    "java": "spruce_fence",
+    "properties": {
+      "east": "false",
+      "north": "false",
+      "south": "false",
+      "waterlogged": "false",
+      "west": "false"
+    },
+    "bedrock": "spruce_fence",
+    "states": {},
+    "color": "#765637",
+    "shape": "post"
+  },
+  "grass_block": {
+    "java": "grass_block",
+    "properties": {
+      "snowy": "false"
+    },
+    "bedrock": "grass_block",
+    "states": {},
+    "color": "#8f9f62",
+    "shape": "cube"
+  },
+  "moss_block": {
+    "java": "moss_block",
+    "properties": {},
+    "bedrock": "moss_block",
+    "states": {},
+    "color": "#778a4e",
+    "shape": "cube"
+  },
+  "moss_carpet": {
+    "java": "moss_carpet",
+    "properties": {},
+    "bedrock": "moss_carpet",
+    "states": {},
+    "color": "#778a4e",
+    "shape": "carpet"
+  },
+  "coarse_dirt": {
+    "java": "coarse_dirt",
+    "properties": {},
+    "bedrock": "coarse_dirt",
+    "states": {},
+    "color": "#81634c",
+    "shape": "cube"
+  },
+  "dirt_path": {
+    "java": "dirt_path",
+    "properties": {},
+    "bedrock": "grass_path",
+    "states": {},
+    "color": "#a28d65",
+    "shape": "path"
+  },
+  "flowering_azalea": {
+    "java": "flowering_azalea",
+    "properties": {},
+    "bedrock": "flowering_azalea",
+    "states": {},
+    "color": "#7c9155",
+    "shape": "bush"
+  },
+  "poppy": {
+    "java": "poppy",
+    "properties": {},
+    "bedrock": "poppy",
+    "states": {},
+    "color": "#c35b4e",
+    "shape": "flower"
+  },
+  "dandelion": {
+    "java": "dandelion",
+    "properties": {},
+    "bedrock": "dandelion",
+    "states": {},
+    "color": "#e3bf58",
+    "shape": "flower"
+  },
+  "red_carpet": {
+    "java": "red_carpet",
+    "properties": {},
+    "bedrock": "red_carpet",
+    "states": {},
+    "color": "#993f3e",
+    "shape": "carpet"
+  }
+}

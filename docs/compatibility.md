@@ -25,3 +25,7 @@ contrastados con los datasets siguientes. Cuarzo usa pillar_axis=y en Bedrock.
 Los fixtures geométricos y ejemplos son propios.
 Para verificar en el juego: versión, SO, hash, método, origen, ejes y aire/omisión.
 Actualizar el estado solo tras esa prueba.
+
+Las 45 entradas detalladas se contrastan con `python tools/update_detail_catalog.py`.
+Se comprueban los tipos Byte/Int/String de Bedrock y Properties/properties de Java.
+Las formas de la preview son esquem?ticas; la navegaci?n se debe probar en el juego.

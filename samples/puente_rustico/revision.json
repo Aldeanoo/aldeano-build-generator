@@ -1,0 +1,11 @@
+{
+  "kind": "diagnostics_not_aesthetic_score",
+  "materials_used": 6,
+  "covered_two_cell_spaces": 0,
+  "explicit_air": 345,
+  "warnings": [
+    "Poco espacio cubierto con dos celdas libres; puede ser correcto en un puente."
+  ],
+  "visual_review_required": true,
+  "limitations": "Las celdas parciales, puertas y vegetacion no se simulan como fisica del juego."
+}

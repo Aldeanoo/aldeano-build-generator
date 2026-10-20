@@ -4,6 +4,7 @@ import hashlib
 import importlib.util
 import io
 import json
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -36,7 +37,7 @@ class ValidationTests(unittest.TestCase):
     def test_examples_match_schema_and_runtime(self):
         schema = json.loads((ROOT / "schema/aldeano-build-v1.schema.json").read_text())
         jsonschema.Draft202012Validator.check_schema(schema)
-        for source in sorted((ROOT / "examples").glob("*.json")):
+        for source in sorted((ROOT / "examples").glob("*.build.json")):
             with self.subTest(source=source.name):
                 data = g.parse_build(source.read_text())
                 jsonschema.validate(data, schema)
@@ -173,15 +174,23 @@ class BinaryTests(unittest.TestCase):
 
     def test_all_materials_and_typed_quartz_states(self):
         item = fixture()
-        item["size"] = [8, 1, 5]
-        item["palette"] = {m: m for m in g.MATERIALS}
-        item["ops"] = [{"op": "set", "at": [i // 5, 0, i % 5], "block": m}
-                       for i, m in enumerate(g.MATERIALS)]
-        outputs, _ = g.generate(item)
-        root = parsed(outputs["axis_fixture.mcstructure"], little=True)
-        entries = root["structure"]["palette"]["default"]["block_palette"]
-        self.assertEqual(len(entries), len(g.MATERIALS))
-        quartz = next(x for x in entries if x["name"] == "minecraft:quartz_block")
+        item["size"] = [17, 2, 4]
+        all_entries = []
+        materials = list(g.MATERIALS)
+        for start in range(0, len(materials), 64):
+            batch = materials[start:start+64]
+            item["palette"] = {m: m for m in batch}
+            item["ops"] = [{"op": "set", "at": [i // 4, 0, i % 4], "block": m}
+                           for i, m in enumerate(batch)]
+            for op in item["ops"]:
+                if op["block"] == "spruce_door_lower": op["at"] = [16,0,0]
+                if op["block"] == "spruce_door_upper": op["at"] = [16,1,0]
+            outputs, _ = g.generate(item)
+            root = parsed(outputs["axis_fixture.mcstructure"], little=True)
+            entries = root["structure"]["palette"]["default"]["block_palette"]
+            self.assertEqual(len(entries), len(batch))
+            all_entries.extend(entries)
+        quartz = next(x for x in all_entries if x["name"] == "minecraft:quartz_block")
         self.assertIsInstance(quartz["states"]["pillar_axis"], nbtlib.String)
         self.assertEqual(quartz["states"]["pillar_axis"], "y")
 
@@ -260,17 +269,29 @@ class PortableKitTests(unittest.TestCase):
         expected = builder.build_bundle()
         self.assertEqual((ROOT / "INICIO_IA.md").read_text(encoding="utf-8"), expected)
         self.assertEqual((ROOT / "INICIO_IA.txt").read_text(encoding="utf-8"), expected)
-        code = expected.split("```python\n", 1)[1].rsplit("\n```", 1)[0]
+        def extract(filename):
+            pattern = r"(?ms)^## " + re.escape(filename) + r" -[^\n]*\n+```python\n(.*?)^```[ \t]*$"
+            return re.search(pattern, expected).group(1).rstrip()
+        code = extract("generator.py")
+        architect_code = extract("architect.py")
         # Source has no fences at the beginning of a line inside its literal strings.
         self.assertEqual(code, (ROOT / "generator.py").read_text(encoding="utf-8").rstrip())
         with tempfile.TemporaryDirectory() as folder:
             work = Path(folder)
             (work / "generator.py").write_text(code, encoding="utf-8")
+            (work / "architect.py").write_text(architect_code, encoding="utf-8")
             (work / "design.json").write_text(json.dumps(fixture()), encoding="utf-8")
             run = subprocess.run([sys.executable, "-S", "generator.py", "design.json"],
                                  cwd=work, capture_output=True, text=True)
             self.assertEqual(run.returncode, 0, run.stderr)
             self.assertTrue((work / "output/axis_fixture.mcpack").exists())
+            request = {"schema":"aldeano-architecture/v1","name":"posada","template":"medieval_inn",
+                       "theme":"medieval","seed":7,"features":["balcony","dormer"]}
+            (work / "request.json").write_text(json.dumps(request),encoding="utf-8")
+            run = subprocess.run([sys.executable,"-S","generator.py","request.json","--output","inn"],
+                                 cwd=work,capture_output=True,text=True)
+            self.assertEqual(run.returncode,0,run.stderr)
+            self.assertTrue((work / "inn/posada.request.json").exists())
 
     def test_cli_errors_and_no_silent_overwrite(self):
         with tempfile.TemporaryDirectory() as folder:

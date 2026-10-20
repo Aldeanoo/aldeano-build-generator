@@ -1,72 +1,103 @@
-# Aldeano Build Generator — instrucciones para la IA
+# Aldeano Build Generator — kit v0.2.0
 
-El usuario te pide usar este kit para crear una construcción de Minecraft.
-Conversa en español, diseña con los datos incluidos y entrega archivos reales.
-Respeta las reglas y herramientas de tu plataforma.
+Ayuda al usuario a crear una construcción detallada de Minecraft.
+Conversa en español y respeta las herramientas y reglas de tu plataforma.
+Usa el código de ESTA versión; sustituye copias antiguas en tu entorno.
 
-## Primer mensaje
+## Inicio: una ronda de preguntas
 
-Pregunta en UN mensaje solo lo que no sepas:
-
+Pregunta solo lo que falte, en un mensaje:
 1. ¿Qué quieres construir y con qué estilo?
-2. ¿Bedrock, Java o ambos? ¿PC, móvil o consola? ¿Versión, si la sabes?
-3. ¿Pequeño, mediano o unas medidas concretas?
-4. ¿Qué detalles o interiores quieres?
+2. ¿Bedrock, Java o ambos? ¿Dispositivo y versión, si la sabes?
+3. ¿Qué tamaño o espacio disponible tienes?
+4. ¿Qué interiores, decoración o detalles son imprescindibles?
 
-Si ya respondió, no repitas. Acepta «decide tú»: casa medieval, ambos,
-hasta 24 × 24 × 24, entrada e interior útil. Límite habitual: 32 por eje.
-No preguntes por coordenadas, paletas, programación ni formatos internos.
-Con respuestas suficientes, diseña y genera sin otra confirmación.
+Reutiliza lo respondido. «Decide tú»: posada medieval, ambos, 31 × 32 × 29,
+con jardín, balcón, buhardilla, chimenea e interior.
+No preguntes por NBT o programación ni pidas otra aprobación.
 
-## Diseño
+## Método: tres pasadas sin más cuestionarios
 
-Crea un JSON con estos campos exactos:
+1. Composición: volumen principal y secundario, plantas, cubierta, aleros,
+acceso, ritmo de ventanas, paleta principal/acento y entorno.
+Comunica solo un resumen breve de la elección.
 
-- `schema`: `aldeano-build/v1`.
-- `name`: letra inicial, minúsculas, números y _, máximo 48 caracteres.
-- `size`: [ancho X, altura Y, fondo Z], enteros positivos hasta 32.
-- `palette`: objeto de alias a materiales del catálogo.
-- `ops`: operaciones en orden; la última escritura gana.
+2. Construye por componentes. No te limites a un cubo hueco con techo plano.
+Prioriza silueta, proporción y profundidad antes que adornos.
+Usa zócalo, marcos salientes, vigas y detalles funcionales.
+Más bloques o materiales no garantizan belleza.
 
-Solo dos operaciones, extremos inclusivos:
+3. Ejecuta, lee revision.json y revisa preview.svg si puedes verla.
+Corrige entrada bloqueada, huecos, cubierta, uniones y objetos flotantes.
+Máximo dos pasadas de corrección. Los diagnósticos no puntúan belleza ni
+simulan la física de Minecraft.
+
+## Ruta cuidada para casas medievales o de bosque
+
+Incluye una posada de autor, con tamaño fijo 31 × 32 × 29.
+Úsala cuando encaje; adapta tema, elementos y semilla.
+Explica que parte de un diseño incluido. No la presentes como un castillo,
+un puente ni una casa de medidas incompatibles.
+
+Solicitud compacta:
 
 ~~~json
-{"op":"fill","from":[0,0,0],"to":[8,0,8],"block":"suelo"}
+{"schema":"aldeano-architecture/v1","name":"posada_del_roble","template":"medieval_inn","theme":"medieval","seed":7,"features":["garden","balcony","dormer","chimney","interior"]}
 ~~~
 
-~~~json
-{"op":"set","at":[4,1,4],"block":"luz"}
-~~~
+Temas: medieval, forest, cerezo. Cambian paleta; cerezo no transforma el
+edificio en arquitectura japonesa. seed: entero 0–999999.
+Features: garden, balcony, dormer, chimney, interior. Omite las que no quieras.
+El compilador expande la solicitud y produce las dos ediciones.
 
-Posiciones dentro de size y alias declarados.
-Sin escribir conserva el mundo; air explícito vacía la posición.
-Vacía interiores y entradas con air. No rellenes todo el edificio de sólido.
-Incluye acceso, paredes con relieve, contraste de materiales y cubierta reconocible.
-Para tejados, usa franjas de bloques completos escalonadas. No uses escaleras,
-puertas, entidades, agua ni materiales fuera del catálogo.
-Prefiere menos de 80 operaciones; máximo 512 y 4 millones de escrituras.
-Completa y comprueba todo el diseño antes de exportar.
+## Ruta libre para otras construcciones
+
+Guarda architect.py y generator.py incluidos. Puedes usar Builder desde Python:
+- Builder(nombre, [x,y,z]); .spec contiene el diseño final.
+- fill(desde,hasta,material), point(x,y,z,material).
+- room(desde,hasta,material): caja con interior vaciado.
+- roof(x0,x1,z0,z1,y,material,axis="x" o "z"): cubierta a dos aguas.
+  Familias válidas: spruce, deepslate_tile, stone_brick.
+- window(x,y,z,width=2,facing="north|south|east|west"): hueco, marcos y contraventanas.
+
+Compón piezas y guarda b.spec como JSON. roof añade altura y cumbrera;
+window añade alféizar, dintel y contraventanas: reserva espacio.
+Combina helpers con fill/point para crear un diseño original.
+No fuerces una plantilla que incumpla el encargo.
+
+BuildSpec manual: campos exactos schema="aldeano-build/v1", name,
+size=[X,Y,Z], palette={alias:material}, ops.
+Nombre: letra inicial, minúsculas, números y _, máximo 48 caracteres.
+Operaciones: {"op":"set","at":[x,y,z],"block":"alias"} o
+{"op":"fill","from":[x,y,z],"to":[x,y,z],"block":"alias"}.
+Extremos inclusivos; coordenadas locales enteras dentro de size.
+Última escritura gana. Air vacía; omisión conserva el mundo.
+Máximo 512 operaciones, 64 alias y 4 millones de escrituras.
+Hasta 32 por eje; 48 con opción explícita.
+
+## Materiales con estado
+
+Usa alias incluidos, sin inventar estados:
+- oak_log_x/y/z y dark_oak_log_x/y/z.
+- spruce, stone_brick y deepslate_tile: stairs_north/south/east/west.
+- spruce, oak, stone_brick y deepslate_tile: slab_bottom/top.
+- spruce_shutter_north/south/east/west: contraventana abierta.
+- spruce_door_lower y spruce_door_upper: juntas a Y y Y+1.
+- lantern, lantern_hanging, spruce_post, oak_leaves, vegetación y alfombras.
+
+Facing de una escalera indica hacia dónde sube su parte alta.
+No añadas entidades, inventarios, agua, redstone ni estados fuera del catálogo.
 
 ## Entrega
 
-Guarda el compilador incluido sin cambiar su lógica y sigue el procedimiento de ejecución.
-No improvises un serializador NBT nuevo.
+Ejecuta los archivos incluidos; no reescribas su lógica NBT.
+Entrega pack, estructura y JSON reutilizable. Muestra preview.svg si puedes.
+Resume dimensiones y detalles y utiliza LEEME.txt para los pasos.
 
-Java por defecto: java-26.3; para 1.21.1: java-1.21.1.
-Bedrock: datos 1.26.30 y mcstructure v1.
-Para otra versión, indica que no hay perfil específico probado.
+Solo afirma ejecuciones y validaciones que hayas realizado.
+La carga real en Minecraft sigue pendiente: no la declares probada.
+Sin herramientas, entrega el JSON y explica que falta convertirlo.
+No inventes enlaces. Si no leíste todo, pide INICIO_IA.txt completo.
 
-Entrega pack principal, estructura suelta y JSON reutilizable.
-Añade dimensiones, materiales resumidos y pasos de instalación.
-Muestra preview.svg si la interfaz lo permite; son tres proyecciones.
-Para ambos, ofrece enlaces individuales.
-
-Solo afirma ejecución/validación si las realizaste. Los perfiles son experimentales:
-hay comprobaciones técnicas, pero falta confirmar su carga dentro del juego.
-No inventes enlaces ni presentes código como archivo terminado.
-
-Sin ejecución: conserva las respuestas y entrega el JSON completo, explicando que
-falta convertirlo a binario. Si falta algún recurso, pide INICIO_IA.txt completo.
-
-En revisiones, modifica el mismo JSON y recompila.
-Conserva nombre y UUID Bedrock; incrementa --pack-version (1.0.1, etc.).
+Para cambios, conserva nombre y solicitud; modifica theme/features o BuildSpec.
+Incrementa --pack-version al actualizar un pack Bedrock con el mismo nombre.

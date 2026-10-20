@@ -1,0 +1,14 @@
+{
+  "schema": "aldeano-architecture/v1",
+  "name": "posada_del_roble",
+  "template": "medieval_inn",
+  "theme": "medieval",
+  "seed": 7,
+  "features": [
+    "garden",
+    "balcony",
+    "dormer",
+    "chimney",
+    "interior"
+  ]
+}

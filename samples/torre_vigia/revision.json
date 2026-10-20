@@ -1,0 +1,9 @@
+{
+  "kind": "diagnostics_not_aesthetic_score",
+  "materials_used": 7,
+  "covered_two_cell_spaces": 88,
+  "explicit_air": 749,
+  "warnings": [],
+  "visual_review_required": true,
+  "limitations": "Las celdas parciales, puertas y vegetacion no se simulan como fisica del juego."
+}

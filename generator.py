@@ -13,7 +13,7 @@ import sys
 import uuid
 import zipfile
 
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 SCHEMA = "aldeano-build/v1"
 MAX_BYTES = 262144
 MAX_OPS = 512
@@ -65,6 +65,56 @@ MATERIALS = {
     "glowstone": ("glowstone", {}, "#c6a568"),
     "sea_lantern": ("sea_lantern", {}, "#b5d4c6"),
 }
+# BEGIN DETAIL CATALOG
+DETAILS = {}
+
+
+def _detail(alias, name, props, states, color, shape="cube", bedrock=None):
+    DETAILS[alias] = {"java": name, "properties": props, "bedrock": bedrock or name,
+                     "states": states, "color": color, "shape": shape}
+
+
+for wood, color in (("oak", "#96734b"), ("dark_oak", "#514031")):
+    for axis in "xyz":
+        _detail(wood+"_log_"+axis, wood+"_log", {"axis": axis}, {"pillar_axis": axis}, color)
+for family, color in (("deepslate_tile", "#3d4c58"), ("spruce", "#765637"), ("stone_brick", "#96918a")):
+    for facing, direction in (("north", 3), ("south", 2), ("east", 0), ("west", 1)):
+        _detail(family+"_stairs_"+facing, family+"_stairs",
+                {"facing": facing, "half": "bottom", "shape": "straight", "waterlogged": "false"},
+                {"upside_down_bit": False, "weirdo_direction": direction}, color, "stairs")
+for family, color in (("spruce", "#765637"), ("oak", "#b8945f"),
+                      ("stone_brick", "#96918a"), ("deepslate_tile", "#3d4c58")):
+    for half in ("bottom", "top"):
+        _detail(family+"_slab_"+half, family+"_slab",
+                {"type": half, "waterlogged": "false"},
+                {"minecraft:vertical_half": half}, color, "slab")
+for facing, direction in (("north", 3), ("south", 2), ("east", 0), ("west", 1)):
+    _detail("spruce_shutter_"+facing, "spruce_trapdoor",
+            {"facing": facing, "half": "bottom", "open": "true", "powered": "false", "waterlogged": "false"},
+            {"direction": direction, "open_bit": True, "upside_down_bit": False}, "#816240", "shutter")
+for half in ("lower", "upper"):
+    _detail("spruce_door_"+half, "spruce_door",
+            {"facing": "north", "half": half, "hinge": "left", "open": "false", "powered": "false"},
+            {"door_hinge_bit": False, "minecraft:cardinal_direction": "east", "open_bit": False,
+             "upper_block_bit": half == "upper"}, "#785a39", "door")
+for hanging in (True, False):
+    _detail("lantern_hanging" if hanging else "lantern", "lantern",
+            {"hanging": str(hanging).lower(), "waterlogged": "false"},
+            {"hanging": hanging}, "#edb65a", "lantern")
+_detail("oak_leaves", "oak_leaves",
+        {"distance": "7", "persistent": "true", "waterlogged": "false"},
+        {"persistent_bit": True, "update_bit": False}, "#6f8c48")
+_detail("spruce_post", "spruce_fence",
+        {"east": "false", "north": "false", "south": "false", "waterlogged": "false", "west": "false"},
+        {}, "#765637", "post")
+_detail("grass_block", "grass_block", {"snowy": "false"}, {}, "#8f9f62")
+for name, color, shape in (("moss_block", "#778a4e", "cube"), ("moss_carpet", "#778a4e", "carpet"),
+                           ("coarse_dirt", "#81634c", "cube"), ("dirt_path", "#a28d65", "path"),
+                           ("flowering_azalea", "#7c9155", "bush"), ("poppy", "#c35b4e", "flower"),
+                           ("dandelion", "#e3bf58", "flower"), ("red_carpet", "#993f3e", "carpet")):
+    _detail(name, name, {}, {}, color, shape, "grass_path" if name == "dirt_path" else None)
+MATERIALS.update({key: (d["bedrock"], d["states"], d["color"]) for key, d in DETAILS.items()})
+# END DETAIL CATALOG
 NAME = re.compile(r"[a-z][a-z0-9_]{0,47}\Z")
 
 
@@ -199,6 +249,20 @@ def C(value): return (10, value)
 def L(child, values): return (9, (child, values))
 
 
+def java_state(material, modern=True):
+    detail = DETAILS.get(material, {})
+    result = {"id" if modern else "Name": "minecraft:" + detail.get("java", material)}
+    if detail.get("properties"):
+        result["properties" if modern else "Properties"] = detail["properties"]
+    return result
+
+
+def _bedrock_state(value):
+    if type(value) is bool:
+        return (1, int(value))
+    return I(value) if type(value) is int else S(value)
+
+
 def write_nbt(root, little=False):
     endian = "<" if little else ">"
 
@@ -287,7 +351,7 @@ def export_mcstructure(volume):
         name, states, _ = MATERIALS[material]
         palette.append({
             "name": S("minecraft:" + name),
-            "states": C({key: S(value) for key, value in states.items()}),
+            "states": C({key: _bedrock_state(value) for key, value in states.items()}),
             "version": I(BEDROCK_VERSION),
         })
     return write_nbt({
@@ -305,11 +369,14 @@ def export_mcstructure(volume):
 
 def export_java_structure(volume, profile="java-26.3"):
     config = JAVA_PROFILES[profile]
-    name_key = "id" if config["modern"] else "Name"
+    palette = []
+    for material in volume["palette"]:
+        state = java_state(material, config["modern"])
+        palette.append({key: C({k: S(v) for k, v in value.items()})
+                        if type(value) is dict else S(value) for key, value in state.items()})
     root = {
         "DataVersion": I(config["data_version"]), "size": L(3, volume["size"]),
-        "palette": L(10, [{name_key: S("minecraft:" + name)}
-                          for name in volume["palette"]]),
+        "palette": L(10, palette),
         "blocks": L(10, [{"pos": L(3, pos), "state": I(state)}
                          for pos, state in positions(volume)]),
         "entities": L(10, []),
@@ -390,8 +457,7 @@ def validate_outputs(outputs, volume, name, edition, java_profile):
         blob = outputs[name + ".nbt"]
         root = read_nbt(gzip.decompress(blob))
         config = JAVA_PROFILES[java_profile]
-        key = "id" if config["modern"] else "Name"
-        expected_palette = [{key: "minecraft:" + m} for m in volume["palette"]]
+        expected_palette = [java_state(m, config["modern"]) for m in volume["palette"]]
         expected_blocks = [{"pos": pos, "state": state} for pos, state in positions(volume)]
         if (root["DataVersion"] != config["data_version"] or root["size"] != volume["size"]
                 or root["palette"] != expected_palette or root["blocks"] != expected_blocks
@@ -409,7 +475,7 @@ def validate_outputs(outputs, volume, name, edition, java_profile):
     return checks
 
 
-def preview_svg(volume):
+def preview_ortho_svg(volume):
     """Orthographic projections, using the same final cells as both exporters."""
     sx, sy, sz = volume["size"]
     cells, palette = volume["cells"], volume["palette"]
@@ -446,8 +512,173 @@ def preview_svg(volume):
     return ("\n".join(svg) + "\n</svg>\n").encode("utf-8")
 
 
+def preview_boxes(material):
+    """Local cuboids for the supported block states; schematic, not game textures."""
+    detail = DETAILS.get(material, {})
+    shape, props = detail.get("shape", "cube"), detail.get("properties", {})
+    if shape == "slab":
+        return [(0, 0 if props["type"] == "bottom" else .5, 0,
+                 1, .5 if props["type"] == "bottom" else 1, 1)]
+    if shape == "stairs":
+        upper = {"north": (0, .5, 0, 1, 1, .5), "south": (0, .5, .5, 1, 1, 1),
+                 "east": (.5, .5, 0, 1, 1, 1), "west": (0, .5, 0, .5, 1, 1)}
+        return [(0, 0, 0, 1, .5, 1), upper[props["facing"]]]
+    if shape == "shutter":
+        return [{"north": (0, 0, 0, 1, 1, .1875), "south": (0, 0, .8125, 1, 1, 1),
+                 "east": (.8125, 0, 0, 1, 1, 1), "west": (0, 0, 0, .1875, 1, 1)}[props["facing"]]]
+    if shape == "door":
+        return [(0, 0, .8125, 1, 1, 1)]
+    if shape == "lantern":
+        return [(.31, .12, .31, .69, .65, .69), (.25, .65, .25, .75, .78, .75),
+                (.44, .78, .44, .56, 1, .56)]
+    if shape == "post":
+        return [(.375, 0, .375, .625, 1, .625)]
+    if shape == "bush":
+        return [(.1, 0, .1, .9, .7, .9)]
+    if shape == "flower":
+        return [(.43, 0, .43, .57, .6, .57), (.2, .5, .2, .8, .8, .8)]
+    if shape == "carpet":
+        return [(0, 0, 0, 1, .0625, 1)]
+    if shape == "path":
+        return [(0, 0, 0, 1, .9375, 1)]
+    return [(0, 0, 0, 1, 1, 1)]
+
+
+def preview_svg(volume):
+    """Isometric view of final geometry, including stairs/slabs and oriented details."""
+    import math
+    sx, sy, sz = volume["size"]
+    unit, pad = 18, 56
+    def project(point):
+        x, y, z = point
+        return ((x + z) * unit, (x - z) * unit * .5 - y * unit)
+    corners = [project((x, y, z)) for x in (0, sx) for y in (0, sy) for z in (0, sz)]
+    minx, miny = min(p[0] for p in corners), min(p[1] for p in corners)
+    width = math.ceil(max(p[0] for p in corners) - minx + pad * 2)
+    height = math.ceil(max(p[1] for p in corners) - miny + pad * 2)
+    def screen(point):
+        x, y = project(point)
+        return (x - minx + pad, y - miny + pad)
+    def material_at(x, y, z):
+        if not (0 <= x < sx and 0 <= y < sy and 0 <= z < sz):
+            return None
+        i = volume["cells"][(x * sy + y) * sz + z]
+        return volume["palette"][i] if i >= 0 and volume["palette"][i] != "air" else None
+    def opaque(material):
+        return material and material != "glass" and DETAILS.get(material, {}).get("shape", "cube") == "cube"
+    def shade(color, factor):
+        channels = [max(0, min(255, round(int(color[i:i+2], 16) * factor))) for i in (1, 3, 5)]
+        return "#" + "".join(f"{c:02x}" for c in channels)
+    faces = []
+    for (x, y, z), state in positions(volume):
+        material = volume["palette"][state]
+        if material == "air":
+            continue
+        for a, b, c, d, e, f in preview_boxes(material):
+            a, b, c, d, e, f = a+x, b+y, c+z, d+x, e+y, f+z
+            candidates = [
+                ("top", [(a,e,c),(d,e,c),(d,e,f),(a,e,f)], e==y+1, (x,y+1,z), 1.10),
+                ("front", [(a,b,c),(d,b,c),(d,e,c),(a,e,c)], c==z, (x,y,z-1), .96),
+                ("right", [(d,b,c),(d,b,f),(d,e,f),(d,e,c)], d==x+1, (x+1,y,z), .72)]
+            for face, points, boundary, neighbor, lighting in candidates:
+                if boundary and opaque(material_at(*neighbor)):
+                    continue
+                color = MATERIALS[material][2]
+                if material == "grass_block" and face != "top":
+                    color = "#897451"
+                variation = .97 + ((x*73+y*37+z*19) % 9) * .007
+                depth = sum(p[0] + p[1] - p[2] for p in points) / 4
+                faces.append((depth, face, [screen(p) for p in points],
+                              shade(color, lighting*variation), material))
+    if faces:
+        all_points = [point for row in faces for point in row[2]]
+        left, top = min(p[0] for p in all_points), min(p[1] for p in all_points)
+        width = math.ceil(max(p[0] for p in all_points) - left + pad*2)
+        height = math.ceil(max(p[1] for p in all_points) - top + pad*2)
+        faces = [(depth, face, [(x-left+pad,y-top+pad) for x,y in points], color, material)
+                 for depth,face,points,color,material in faces]
+    svg = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
+           '<rect width="100%" height="100%" fill="#f1eee5"/>',
+           '<text x="32" y="28" font-family="sans-serif" font-size="15" fill="#425047">Aldeano · vista isometrica de la geometria exportada</text>']
+    def line(p, q, opacity=".18"):
+        svg.append(f'<line x1="{p[0]:.2f}" y1="{p[1]:.2f}" x2="{q[0]:.2f}" y2="{q[1]:.2f}" stroke="#1c2927" stroke-opacity="{opacity}" stroke-width=".6"/>')
+    def lerp(a, b, t):
+        return (a[0] + (b[0]-a[0])*t, a[1] + (b[1]-a[1])*t)
+    for _, face, points, color, material in sorted(faces, key=lambda row: row[0]):
+        coords = " ".join(f"{p[0]:.2f},{p[1]:.2f}" for p in points)
+        opacity = '.62' if material == 'glass' else '1'
+        svg.append(f'<polygon points="{coords}" fill="{color}" fill-opacity="{opacity}" stroke="#26302b" stroke-opacity=".13" stroke-width=".5"/>')
+        if face != "top" and any(word in material for word in ("planks", "brick", "stone", "log")):
+            if "log_y" in material:
+                for t in (.23, .72):
+                    line(lerp(points[0],points[1],t),lerp(points[3],points[2],t))
+            else:
+                for t in ((.5,) if "brick" in material else (.33,.67)):
+                    line(lerp(points[0],points[3],t),lerp(points[1],points[2],t))
+                if "brick" in material:
+                    line(lerp(points[0],points[1],.5),lerp(points[3],points[2],.5))
+    svg.append("</svg>\n")
+    return "\n".join(svg).encode("utf-8")
+
+
+def analyze_quality(volume):
+    """Diagnostics for review, not an aesthetic score or a game physics simulation."""
+    sx, sy, sz = volume["size"]
+    cells, palette = volume["cells"], volume["palette"]
+    counts = Counter(palette[n] for n in cells if n >= 0)
+    def solid(x, y, z):
+        idx = cells[(x*sy+y)*sz+z]
+        return idx >= 0 and palette[idx] != "air"
+    covered = 0
+    for x in range(sx):
+        for z in range(sz):
+            highest = next((y for y in range(sy-1,-1,-1) if solid(x,y,z)), -1)
+            for y in range(1, highest-1):
+                if solid(x,y-1,z) and not solid(x,y,z) and not solid(x,y+1,z):
+                    covered += 1
+    warnings = []
+    if counts.get("air", 0) == 0:
+        warnings.append("Sin vaciado explicito: comprueba interiores y terreno existente.")
+    if len(counts) < 4:
+        warnings.append("Paleta reducida: revisa contraste, marco y cubierta si buscas detalle.")
+    if covered < 4:
+        warnings.append("Poco espacio cubierto con dos celdas libres; puede ser correcto en un puente.")
+    return {"kind": "diagnostics_not_aesthetic_score", "materials_used": len(counts),
+            "covered_two_cell_spaces": covered, "explicit_air": counts.get("air", 0),
+            "warnings": warnings, "visual_review_required": True,
+            "limitations": "Las celdas parciales, puertas y vegetacion no se simulan como fisica del juego."}
+
+
+
+def validate_components(volume):
+    sx, sy, sz = volume["size"]
+    def at(x, y, z):
+        if not (0 <= x < sx and 0 <= y < sy and 0 <= z < sz):
+            return None
+        state = volume["cells"][(x*sy+y)*sz+z]
+        return volume["palette"][state] if state >= 0 else None
+    pairs = 0
+    for (x,y,z), state in positions(volume):
+        material = volume["palette"][state]
+        if material == "spruce_door_lower":
+            if at(x,y+1,z) != "spruce_door_upper":
+                _fail(f"Puerta en {[x,y,z]}: falta la mitad superior en Y+1.")
+            pairs += 1
+        elif material == "spruce_door_upper" and at(x,y-1,z) != "spruce_door_lower":
+            _fail(f"Puerta en {[x,y,z]}: falta la mitad inferior en Y-1.")
+    return pairs
+
+
 def generate(build, edition="both", java_profile="java-26.3", max_size=32,
              pack_version=(1, 0, 0)):
+    request = None
+    if type(build) is dict and build.get("schema") == "aldeano-architecture/v1":
+        request = build
+        try:
+            from architect import build_architecture
+            build = build_architecture(request)
+        except (ImportError, ValueError) as error:
+            _fail(f"No se puede crear la arquitectura: {error}")
     validate_build(build, max_size)
     if edition not in ("both", "bedrock", "java") or java_profile not in JAVA_PROFILES:
         _fail("Edicion o perfil desconocido.")
@@ -455,6 +686,7 @@ def generate(build, edition="both", java_profile="java-26.3", max_size=32,
                                     for n in pack_version)):
         _fail("Version del pack: tres enteros entre 0 y 65535.")
     volume, outputs = compile_volume(build), {}
+    door_pairs = validate_components(volume)
     name = build["name"]
     if edition in ("bedrock", "both"):
         structure = export_mcstructure(volume)
@@ -465,12 +697,14 @@ def generate(build, edition="both", java_profile="java-26.3", max_size=32,
         outputs[name + ".nbt"] = structure
         outputs[name + ".datapack.zip"] = package_java(structure, name, java_profile)
     checks = validate_outputs(outputs, volume, name, edition, java_profile)
+    checks.append("paired_door_halves")
     counts = Counter(volume["palette"][i] for i in volume["cells"] if i >= 0)
     report = {
         "generator_version": VERSION, "schema": SCHEMA, "name": name,
         "edition": edition, "java_profile": java_profile if edition != "bedrock" else None,
         "bedrock_profile": "bedrock-1.26.30" if edition != "java" else None,
         "pack_version": list(pack_version), "size": volume["size"],
+        "door_pairs": door_pairs,
         "placed_blocks": sum(counts.values()) - counts.get("air", 0),
         "explicit_air": counts.get("air", 0), "omitted_cells": volume["cells"].count(-1),
         "validation": {"level": "structural", "passed": True, "checks": checks,
@@ -478,10 +712,14 @@ def generate(build, edition="both", java_profile="java-26.3", max_size=32,
         "sha256": {key: hashlib.sha256(value).hexdigest() for key, value in outputs.items()},
     }
     outputs[name + ".build.json"] = _json(build)
+    if request is not None:
+        outputs[name + ".request.json"] = _json(request)
+    outputs["revision.json"] = _json(analyze_quality(volume))
     outputs["validacion.json"] = _json(report)
     outputs["materiales.txt"] = ("\n".join(f"{m}: {n}" for m, n in sorted(counts.items())
                                          if m != "air") + "\n").encode("utf-8")
     outputs["preview.svg"] = preview_svg(volume)
+    outputs["preview_planos.svg"] = preview_ortho_svg(volume)
     help_text = f"""Aldeano Build Generator {VERSION} - {name}
 Validacion estructural correcta. No se ha probado esta construccion dentro del juego.
 Edicion solicitada: {edition}. Java: {java_profile}. Bedrock: motor minimo 1.26.30.
@@ -501,7 +739,8 @@ El datapack debe corresponder a la version Java elegida al generar.
 Las posiciones omitidas conservan el mundo; el aire explicito vacia posiciones.
 Para pruebas, usa un mundo creativo de ensayo con espacio libre y permisos.
 Si actualizas el mismo pack Bedrock, incrementa --pack-version (ejemplo: 1.0.1).
-Conserva el .build.json para pedir revisiones. preview.svg muestra tres proyecciones.
+Conserva el .build.json o .request.json para revisiones. preview.svg muestra una vista 3D.
+preview_planos.svg contiene las tres proyecciones. revision.json incluye comprobaciones orientativas.
 """
     outputs["LEEME.txt"] = help_text.encode("utf-8")
     outputs[name + ".todo.zip"] = _zip(outputs)

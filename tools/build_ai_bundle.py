@@ -14,30 +14,26 @@ import generator as g
 def build_bundle():
     conversation = (ROOT / "instructions/conversation.es.md").read_text(encoding="utf-8")
     runtime = (ROOT / "instructions/runtime.md").read_text(encoding="utf-8")
-    code = (ROOT / "generator.py").read_text(encoding="utf-8")
-    example = {
-        "schema": g.SCHEMA, "name": "refugio", "size": [9, 6, 9],
-        "palette": {"suelo": "stone_bricks", "pared": "oak_planks",
-                    "techo": "spruce_planks", "vacio": "air"},
-        "ops": [
-            {"op": "fill", "from": [0, 0, 0], "to": [8, 0, 8], "block": "suelo"},
-            {"op": "fill", "from": [0, 1, 0], "to": [8, 4, 8], "block": "pared"},
-            {"op": "fill", "from": [1, 1, 1], "to": [7, 4, 7], "block": "vacio"},
-            {"op": "fill", "from": [4, 1, 0], "to": [4, 2, 0], "block": "vacio"},
-            {"op": "fill", "from": [0, 5, 0], "to": [8, 5, 8], "block": "techo"},
-        ],
-    }
-    g.validate_build(example)
+    code = (ROOT / "generator.py").read_text(encoding="utf-8").rstrip() + "\n"
+    architect = (ROOT / "architect.py").read_text(encoding="utf-8").rstrip() + "\n"
+    example = {"schema": "aldeano-architecture/v1", "name": "posada_del_roble",
+               "template": "medieval_inn", "theme": "medieval", "seed": 7,
+               "features": ["garden", "balcony", "dormer", "chimney", "interior"]}
+    from architect import build_architecture
+    g.validate_build(build_architecture(example))
     return (
         conversation.rstrip() + "\n\n" + runtime.rstrip()
         + "\n\n## Catalogo completo\n\n" + ", ".join(g.MATERIALS)
         + "\n\n## Ejemplo valido completo\n\n```json\n"
         + json.dumps(example, ensure_ascii=False, separators=(",", ":"))
+        + "\n```\n\n## architect.py - copiar este bloque sin cambios\n\n```python\n"
+        + architect.rstrip()
         + "\n```\n\n## generator.py - copiar este bloque sin cambios\n\n```python\n"
         + code.rstrip() + "\n```\n\n"
         + f"Kit v{g.VERSION}. Fuente: {g.REPO}. Licencia MIT. "
         + "Copyright (c) 2026 Aldeanoo.\n"
         + "SHA-256 de generator.py: " + hashlib.sha256(code.encode("utf-8")).hexdigest() + "\n"
+        + "SHA-256 de architect.py: " + hashlib.sha256(architect.encode("utf-8")).hexdigest() + "\n"
         + "Comienza ahora con las preguntas que falten; no des una explicacion "
         + "larga del funcionamiento del kit.\n"
     )
@@ -54,7 +50,7 @@ def main():
             if not path.exists() or path.read_text(encoding="utf-8") != content:
                 raise SystemExit(f"{filename} no coincide: ejecuta tools/build_ai_bundle.py.")
         else:
-            path.write_text(content, encoding="utf-8")
+            path.write_bytes(content.encode("utf-8"))
     print(f"Kit v{g.VERSION}: {len(content.encode('utf-8'))} bytes; "
           + ("verificado" if args.check else "generado"))
 

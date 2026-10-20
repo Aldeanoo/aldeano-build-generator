@@ -1,4 +1,4 @@
-Aldeano Build Generator 0.1.0 - casa_medieval
+Aldeano Build Generator 0.2.0 - casa_medieval
 Validacion estructural correcta. No se ha probado esta construccion dentro del juego.
 Edicion solicitada: both. Java: java-26.3. Bedrock: motor minimo 1.26.30.
 
@@ -17,4 +17,5 @@ El datapack debe corresponder a la version Java elegida al generar.
 Las posiciones omitidas conservan el mundo; el aire explicito vacia posiciones.
 Para pruebas, usa un mundo creativo de ensayo con espacio libre y permisos.
 Si actualizas el mismo pack Bedrock, incrementa --pack-version (ejemplo: 1.0.1).
-Conserva el .build.json para pedir revisiones. preview.svg muestra tres proyecciones.
+Conserva el .build.json o .request.json para revisiones. preview.svg muestra una vista 3D.
+preview_planos.svg contiene las tres proyecciones. revision.json incluye comprobaciones orientativas.

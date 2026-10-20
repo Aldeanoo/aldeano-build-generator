@@ -1,5 +1,5 @@
 {
-  "generator_version": "0.1.0",
+  "generator_version": "0.2.0",
   "schema": "aldeano-build/v1",
   "name": "torre_vigia",
   "edition": "both",
@@ -15,6 +15,7 @@
     24,
     13
   ],
+  "door_pairs": 0,
   "placed_blocks": 1092,
   "explicit_air": 749,
   "omitted_cells": 2215,
@@ -27,7 +28,8 @@
       "mcpack_contents",
       "java_gzip_nbt_big_endian",
       "java_geometry_and_palette",
-      "datapack_contents"
+      "datapack_contents",
+      "paired_door_halves"
     ],
     "minecraft_tested": false
   },

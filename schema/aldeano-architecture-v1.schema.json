@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Aldeano Architecture v1",
+  "type": "object",
+  "required": ["schema", "name", "template", "theme", "seed", "features"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {"const": "aldeano-architecture/v1"},
+    "name": {"type": "string", "pattern": "^[a-z][a-z0-9_]{0,47}$"},
+    "template": {"const": "medieval_inn"},
+    "theme": {"enum": ["medieval", "forest", "cerezo"]},
+    "seed": {"type": "integer", "minimum": 0, "maximum": 999999},
+    "features": {
+      "type": "array", "uniqueItems": true, "maxItems": 5,
+      "items": {"enum": ["garden", "balcony", "dormer", "chimney", "interior"]}
+    }
+  }
+}
